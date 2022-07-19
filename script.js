@@ -4,12 +4,11 @@ let titles = [];
 let grid = [];
 
 function setup() {
-  randomSeed(0);
+  //randomSeed(0);
   createCanvas(800, 800);
   createTileData();
   createGrid();
   solveGrid();
-  console.log(titles.length);
 }
 
 function createTileData() {
@@ -392,7 +391,7 @@ function draw() {
 
   for (let a = 0; a < grid.length; a++) {
     for (let b = 0; b < grid[a].length; b++) {
-      hexagon(2200 + 260 * b + 130 * (a % 2), 800 + 225 * a, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      hexagon(2200 + 260 * b + 130 * (a ), 800 + 225 * a, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
 
