@@ -170,7 +170,6 @@ function solveGrid() {
 }
 
 function findSolution(x, y) {
-  //kijk welke nummers er al zijn gedefinierd rondom deze hexagon...
   let corners = [-1, -1, -1, -1, -1, -1];
 
   //top
@@ -379,7 +378,8 @@ function findTile(corners) {
   return random(solutions);
 }
 
-
+let scrollx=0;
+let scrolly=0;
 
 function draw() {
   count = 0;
@@ -388,10 +388,12 @@ function draw() {
   strokeWeight(2);
   stroke(0);
   strokeWeight(2);
+  scrollx+=10;
+  scrolly+=10;
 
   for (let a = 0; a < grid.length; a++) {
     for (let b = 0; b < grid[a].length; b++) {
-      hexagon(2200 + 260 * b + 130 * (a ), 800 + 225 * a, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      hexagon(2200 + (260 * b + 130 * a + scrollx)%4170, 800 + 225 * a , sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
 
