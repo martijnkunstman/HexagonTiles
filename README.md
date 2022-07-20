@@ -10,11 +10,12 @@ Every hexagon tile got 6 neighbour hexagon tiles.
 TODO:  
 
 - Implement Wave Function Collapse 
-- Refactor code (corner lookup functions) 
 - Prevent circle elements 
 - Use map for a game and check consistency of the pattern 
-- implement some kind of pathfinding mechanism   
+- implement some kind of pathfinding mechanism  
+- scrollY fix 
 
 Live Demo: 
+- Refactor code (corner lookup functions) 
 
 https://martijnkunstman.github.io/HexagonTiles/
