@@ -1,6 +1,6 @@
 let sc = 0.1;
-let gridTitlesWidth = 18;
-let gridTitlesHeight = 22;
+let gridTitlesWidth = 5;
+let gridTitlesHeight = 6;
 
 let grid = [];
 
@@ -10,7 +10,7 @@ function setup() {
   createCanvas(800, 600);
   createGrid();
   solveGrid();
-  console.log(gridTitlesWidth * 260);
+  //waveCollapse();
 }
 
 function createGrid() {
@@ -32,6 +32,56 @@ function solveGrid() {
     }
   }
 }
+
+// waveCollapse functions
+
+function waveCollapse() {
+  grid[Math.round(gridTitlesHeight / 2)][Math.round(gridTitlesWidth / 2)] = 10;
+  findSolutions();
+}
+
+function findSolutions() {
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
+      console.log(a+"-"+b);
+      if ((grid[a][b] == -1) || (typeof grid[a][b] == "Array")) {
+        grid[a][b] = findSolution(b, a);
+      }
+      console.log(grid);
+    }
+  }
+  console.log(grid);
+  //findLowestEntropy();
+  //checkForCollapse();
+}
+function findLowestEntropy() {
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
+      if (grid[a][b] != -1) {
+        grid[a][b] = findSolution(b, a);
+      }
+    }
+  }
+}
+function checkForCollapse() {
+  collapse = false;
+  for (let a = 0; a < grid.length; a++) {
+    for (let b = 0; b < grid[a].length; b++) {
+      if ((grid[a][b] != -1) && (typeof grid[a][b] != "Array")) {
+        collapse = true;
+      }
+    }
+  }
+  if (!collapse) {
+    findSolutions()
+  } else {
+    console.log(grid);
+  }
+}
+
+//----------------
+
+
 
 function findSolution(x, y) {
   let corners;
@@ -160,14 +210,14 @@ function findTile(corners) {
 
   let returntype = 5;
 
-  //1. find first tile  
+  //1. find last tile  
   if (returntype == 1) {
     solutions.sort((a, b) => a - b);
     solutions.reverse();
     return solutions[0];
   }
 
-  //2. find last tile  
+  //2. find first tile  
   if (returntype == 2) {
     solutions.sort((a, b) => a - b);
     return solutions[0];
@@ -190,7 +240,13 @@ function findTile(corners) {
 
   //prevent circle solutions
   //find one that is not used so much yet
-  
+
+  //6. return all solutions
+  if (returntype == 6) {
+    console.log(solutions);
+    return solutions;
+  }
+
 }
 
 function filterCenterline(solutions, centerline) {

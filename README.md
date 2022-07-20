@@ -12,11 +12,11 @@ TODO:
 - Implement Wave Function Collapse 
 - Prevent circle elements 
 - Use map for a game and check consistency of the pattern 
-- implement some kind of pathfinding mechanism  
+- Implement some kind of pathfinding mechanism  
 
 DONE:
 - Refactor code (corner lookup functions) 
-- scrollY fix 
+- ScrollY fix 
 
 Live Demo: 
 
