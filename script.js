@@ -5,7 +5,7 @@ let grid = [];
 
 function setup() {
   //randomSeed(0);
-  createCanvas(800, 800);
+  createCanvas(800, 600);
   createTileData();
   createGrid();
   solveGrid();
@@ -375,6 +375,8 @@ function findTile(corners) {
       solutions.push(a);
     }
   }
+  //solutions.sort((a,b)=>a-b);
+  //solutions.reverse();
   return random(solutions);
 }
 
@@ -393,19 +395,15 @@ function draw() {
 
   for (let a = 0; a < grid.length; a++) {
     for (let b = 0; b < grid[a].length; b++) {
-      hexagon(2200 + (260 * b + 130 * a + scrollx)%4170, 800 + 225 * a , sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      hexagon(3000 + (260 * b + 130 * a + scrollx)%4170, 800 + 225 * a , sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
-
-
-
-
 
   teller1 = 1;
   teller2 = 1;
   add = 0;
   for (let a = 0; a < titles.length; a++) {
-    hexagon(260 * teller1 + add, 225 * teller2, sc, (TWO_PI / 6) * titles[a].rotation, titles[a].invert, titles[a].variant);
+    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * titles[a].rotation, titles[a].invert, titles[a].variant);
     teller1++;
     if (teller1 > 6) {
       teller1 = 1;
@@ -418,7 +416,7 @@ function draw() {
   }
 
 
-  text(count, 400, 400, 500, 500);
+  text(count, 750, 550, 100, 100);
 }
 
 function hexagon(transX, transY, s, r, i, variant) {
