@@ -157,32 +157,71 @@ function findTile(corners) {
       solutions.push(a);
     }
   }
+
+  let returntype = 5;
+
+  //1. find first tile  
+  if (returntype == 1) {
+    solutions.sort((a, b) => a - b);
+    solutions.reverse();
+    return solutions[0];
+  }
+
+  //2. find last tile  
+  if (returntype == 2) {
+    solutions.sort((a, b) => a - b);
+    return solutions[0];
+  }
+
+  //3. return no centerline solution
+  if (returntype == 3) {
+    return filterCenterline(solutions, false);
+  }
+
+  //4. return centerline solution
+  if (returntype == 4) {
+    return filterCenterline(solutions, true);
+  }
+
+  //5. return random element from solutions
+  if (returntype == 5) {
+    return random(solutions);
+  }
+
   //prevent circle solutions
-
   //find one that is not used so much yet
-
-
-  //find first tile
-  /*
-  solutions.sort((a, b) => a - b);
-  solutions.reverse();
-  return solutions[0];
-  */
-
-  //find last tile
-  /*
-  solutions.sort((a, b) => a - b);
-  return solutions[0];
-  */
-
-  //random element from solutions
-  return random(solutions);
+  
 }
 
+function filterCenterline(solutions, centerline) {
+  let noCenterlineSolutions = [];
+  let centerlineSolutions = [];
+  for (let a = 0; a < solutions.length; a++) {
+    if (titles[solutions[a]].centerline) {
+      centerlineSolutions.push(solutions[a]);
+    } else {
+      noCenterlineSolutions.push(solutions[a]);
+    }
+  }
+  if (centerline) {
+    if (centerlineSolutions.length > 0) {
+      return random(centerlineSolutions);
+    } else {
+      return random(noCenterlineSolutions);
+    }
+  }
+  else {
+    if (noCenterlineSolutions.length > 0) {
+      return random(noCenterlineSolutions);
+    } else {
+      return random(centerlineSolutions);
+    }
+  }
+}
+
+let once = true;
 let scrollx = 0;
 let scrolly = 0;
-
-let consolelog = true;
 
 function draw() {
   background(100);
@@ -199,7 +238,7 @@ function draw() {
     y = y % (225 * gridTitlesHeight);
     for (let b = 0; b < gridTitlesWidth; b++) {
       x = (260 * b + 130 * a + scrollx);
-      x = x - extra * (260 * gridTitlesHeight/2);
+      x = x - extra * (260 * gridTitlesHeight / 2);
       x = x % (260 * gridTitlesWidth);
       hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
