@@ -1,6 +1,6 @@
 let sc = 0.1;
-let gridTitlesWidth = 5;
-let gridTitlesHeight = 6;
+let gridTitlesWidth = 18;
+let gridTitlesHeight = 20;
 
 let grid = [];
 
