@@ -5,7 +5,7 @@ let gridTitlesHeight = 22;
 let grid = [];
 
 function setup() {
-  randomSeed(0);
+  //randomSeed(1);
   if (gridTitlesHeight % 2 == 1) { gridTitlesHeight++; }
   createCanvas(800, 600);
   createGrid();
@@ -182,24 +182,26 @@ function findTile(corners) {
 let scrollx = 0;
 let scrolly = 0;
 
+let consolelog = true;
+
 function draw() {
   background(100);
   stroke(0);
   strokeWeight(2);
   stroke(0);
   strokeWeight(2);
-  scrollx += 0.1/sc;
-  scrolly += 0.1 / sc;
+  scrollx += 1 / sc;
+  scrolly += 1 / sc;
 
   for (let a = 0; a < gridTitlesHeight; a++) {
+    y = (225 * a + scrolly);
+    extra = Math.floor(y / (225 * gridTitlesHeight));
+    y = y % (225 * gridTitlesHeight);
     for (let b = 0; b < gridTitlesWidth; b++) {
-      y = (225 * a + scrolly);
-      x = (260 * b + 130 * a + scrollx)+260*gridTitlesHeight;
-      if (y > gridTitlesHeight * 225) {
-        x = x - (gridTitlesHeight / 2 * 260);
-        y = y % (gridTitlesHeight * 225);
-      }
-       hexagon(280 / sc + x% (gridTitlesWidth * 260), 40 / sc + y, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      x = (260 * b + 130 * a + scrollx);
+      x = x - extra * (260 * gridTitlesHeight/2);
+      x = x % (260 * gridTitlesWidth);
+      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
 
