@@ -1,7 +1,7 @@
 # HegaonTiles 
 
 
-Procedural continuous map creation by matching hexagon tiles with a pattern. 
+Procedural continuous map generation by matching hexagon tiles with a pattern. 
 There are 102 different types of hexagonal tiles with a unique pattern. 
 Tiles are matched based on their corner colours.  
 Every corner of a hexagonal tile got two neighbour corners of hexagon tiles.

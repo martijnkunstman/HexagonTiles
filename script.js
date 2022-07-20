@@ -1,158 +1,22 @@
 let sc = 0.1;
-let count;
-let titles = [];
+let gridTitlesWidth = 18;
+let gridTitlesHeight = 22;
+
 let grid = [];
 
 function setup() {
   //randomSeed(0);
+  if (gridTitlesHeight % 2 == 1) { gridTitlesHeight++; }
   createCanvas(800, 600);
-  createTileData();
   createGrid();
   solveGrid();
-}
-
-function createTileData() {
-
-  titles.push({ rotation: 0, invert: false, variant: 1, points: [1, 0, 0, 0, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 1, points: [0, 1, 0, 0, 0, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 1, points: [0, 0, 1, 0, 0, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 1, points: [0, 0, 0, 1, 0, 0] });
-  titles.push({ rotation: 4, invert: false, variant: 1, points: [0, 0, 0, 0, 1, 0] });
-  titles.push({ rotation: 5, invert: false, variant: 1, points: [0, 0, 0, 0, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 1, points: [0, 1, 1, 1, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 1, points: [1, 0, 1, 1, 1, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 1, points: [1, 1, 0, 1, 1, 1] });
-  titles.push({ rotation: 3, invert: true, variant: 1, points: [1, 1, 1, 0, 1, 1] });
-  titles.push({ rotation: 4, invert: true, variant: 1, points: [1, 1, 1, 1, 0, 1] });
-  titles.push({ rotation: 5, invert: true, variant: 1, points: [1, 1, 1, 1, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 2, points: [1, 0, 1, 0, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 2, points: [0, 1, 0, 1, 0, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 2, points: [0, 0, 1, 0, 1, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 2, points: [0, 0, 0, 1, 0, 1] });
-  titles.push({ rotation: 4, invert: false, variant: 2, points: [1, 0, 0, 0, 1, 0] });
-  titles.push({ rotation: 5, invert: false, variant: 2, points: [0, 1, 0, 0, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 2, points: [0, 1, 0, 1, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 2, points: [1, 0, 1, 0, 1, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 2, points: [1, 1, 0, 1, 0, 1] });
-  titles.push({ rotation: 3, invert: true, variant: 2, points: [1, 1, 1, 0, 1, 0] });
-  titles.push({ rotation: 4, invert: true, variant: 2, points: [0, 1, 1, 1, 0, 1] });
-  titles.push({ rotation: 5, invert: true, variant: 2, points: [1, 0, 1, 1, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 3, points: [1, 0, 1, 0, 1, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 3, points: [0, 1, 0, 1, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 3, points: [0, 1, 0, 1, 0, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 3, points: [1, 0, 1, 0, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 4, points: [1, 0, 0, 1, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 4, points: [0, 1, 0, 0, 1, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 4, points: [0, 0, 1, 0, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 4, points: [0, 1, 1, 0, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 4, points: [1, 0, 1, 1, 0, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 4, points: [1, 1, 0, 1, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 5, points: [1, 1, 0, 0, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 5, points: [0, 1, 1, 0, 0, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 5, points: [0, 0, 1, 1, 0, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 5, points: [0, 0, 0, 1, 1, 0] });
-  titles.push({ rotation: 4, invert: false, variant: 5, points: [0, 0, 0, 0, 1, 1] });
-  titles.push({ rotation: 5, invert: false, variant: 5, points: [1, 0, 0, 0, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 5, points: [0, 0, 1, 1, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 5, points: [1, 0, 0, 1, 1, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 5, points: [1, 1, 0, 0, 1, 1] });
-  titles.push({ rotation: 3, invert: true, variant: 5, points: [1, 1, 1, 0, 0, 1] });
-  titles.push({ rotation: 4, invert: true, variant: 5, points: [1, 1, 1, 1, 0, 0] });
-  titles.push({ rotation: 5, invert: true, variant: 5, points: [0, 1, 1, 1, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 6, points: [1, 1, 0, 1, 1, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 6, points: [0, 1, 1, 0, 1, 1] });
-  titles.push({ rotation: 2, invert: false, variant: 6, points: [1, 0, 1, 1, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 6, points: [0, 0, 1, 0, 0, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 6, points: [1, 0, 0, 1, 0, 0] });
-  titles.push({ rotation: 2, invert: true, variant: 6, points: [0, 1, 0, 0, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 7, points: [0, 0, 0, 0, 0, 0] });
-  titles.push({ rotation: 1, invert: true, variant: 7, points: [1, 1, 1, 1, 1, 1] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 8, points: [1, 1, 0, 1, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 8, points: [0, 1, 1, 0, 1, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 8, points: [0, 0, 1, 1, 0, 1] });
-  titles.push({ rotation: 3, invert: false, variant: 8, points: [1, 0, 0, 1, 1, 0] });
-  titles.push({ rotation: 4, invert: false, variant: 8, points: [0, 1, 0, 0, 1, 1] });
-  titles.push({ rotation: 5, invert: false, variant: 8, points: [1, 0, 1, 0, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 8, points: [0, 0, 1, 0, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 8, points: [1, 0, 0, 1, 0, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 8, points: [1, 1, 0, 0, 1, 0] });
-  titles.push({ rotation: 3, invert: true, variant: 8, points: [0, 1, 1, 0, 0, 1] });
-  titles.push({ rotation: 4, invert: true, variant: 8, points: [1, 0, 1, 1, 0, 0] });
-  titles.push({ rotation: 5, invert: true, variant: 8, points: [0, 1, 0, 1, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 9, points: [1, 1, 0, 0, 1, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 9, points: [0, 1, 1, 0, 0, 1] });
-  titles.push({ rotation: 2, invert: false, variant: 9, points: [1, 0, 1, 1, 0, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 9, points: [0, 1, 0, 1, 1, 0] });
-  titles.push({ rotation: 4, invert: false, variant: 9, points: [0, 0, 1, 0, 1, 1] });
-  titles.push({ rotation: 5, invert: false, variant: 9, points: [1, 0, 0, 1, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 9, points: [0, 0, 1, 1, 0, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 9, points: [1, 0, 0, 1, 1, 0] });
-  titles.push({ rotation: 2, invert: true, variant: 9, points: [0, 1, 0, 0, 1, 1] });
-  titles.push({ rotation: 3, invert: true, variant: 9, points: [1, 0, 1, 0, 0, 1] });
-  titles.push({ rotation: 4, invert: true, variant: 9, points: [1, 1, 0, 1, 0, 0] });
-  titles.push({ rotation: 5, invert: true, variant: 9, points: [0, 1, 1, 0, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 10, points: [1, 1, 1, 0, 0, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 10, points: [0, 1, 1, 1, 0, 0] });
-  titles.push({ rotation: 2, invert: false, variant: 10, points: [0, 0, 1, 1, 1, 0] });
-
-  titles.push({ rotation: 0, invert: true, variant: 10, points: [0, 0, 0, 1, 1, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 10, points: [1, 0, 0, 0, 1, 1] });
-  titles.push({ rotation: 2, invert: true, variant: 10, points: [1, 1, 0, 0, 0, 1] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 11, points: [1, 1, 1, 0, 1, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 11, points: [0, 1, 1, 1, 0, 1] });
-  titles.push({ rotation: 2, invert: false, variant: 11, points: [1, 0, 1, 1, 1, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 11, points: [0, 1, 0, 1, 1, 1] });
-  titles.push({ rotation: 4, invert: false, variant: 11, points: [1, 0, 1, 0, 1, 1] });
-  titles.push({ rotation: 5, invert: false, variant: 11, points: [1, 1, 0, 1, 0, 1] });
-
-  titles.push({ rotation: 0, invert: true, variant: 11, points: [0, 0, 0, 1, 0, 1] });
-  titles.push({ rotation: 1, invert: true, variant: 11, points: [1, 0, 0, 0, 1, 0] });
-  titles.push({ rotation: 2, invert: true, variant: 11, points: [0, 1, 0, 0, 0, 1] });
-  titles.push({ rotation: 3, invert: true, variant: 11, points: [1, 0, 1, 0, 0, 0] });
-  titles.push({ rotation: 4, invert: true, variant: 11, points: [0, 1, 0, 1, 0, 0] });
-  titles.push({ rotation: 5, invert: true, variant: 11, points: [0, 0, 1, 0, 1, 0] });
-
-
-  titles.push({ rotation: 0, invert: false, variant: 12, points: [1, 0, 1, 0, 1, 0] });
-  titles.push({ rotation: 1, invert: false, variant: 12, points: [0, 1, 0, 1, 0, 1] });
-  titles.push({ rotation: 2, invert: false, variant: 12, points: [1, 0, 1, 0, 1, 0] });
-  titles.push({ rotation: 3, invert: false, variant: 12, points: [0, 1, 0, 1, 0, 1] });
-  titles.push({ rotation: 4, invert: false, variant: 12, points: [1, 0, 1, 0, 1, 0] });
-  titles.push({ rotation: 5, invert: false, variant: 12, points: [0, 1, 0, 1, 0, 1] });
+  console.log(gridTitlesWidth*260);
 }
 
 function createGrid() {
-  for (let a = 0; a < 16; a++) {
+  for (let a = 0; a < gridTitlesHeight; a++) {
     grid.push([])
-    for (let b = 0; b < 16; b++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
       grid[a].push(-1);
     }
   }
@@ -160,8 +24,8 @@ function createGrid() {
 
 function solveGrid() {
   grid[0][0] = 0;
-  for (let a = 0; a < grid.length; a++) {
-    for (let b = 0; b < grid[a].length; b++) {
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
       if ((a != 0) || (b != 0)) {
         grid[a][b] = findSolution(b, a);
       }
@@ -170,195 +34,113 @@ function solveGrid() {
 }
 
 function findSolution(x, y) {
-  let corners = [-1, -1, -1, -1, -1, -1];
+  let corners;
 
-  //top
-  let corner1 = -1;
+  let corner0 = lookUpCorners(x, y, 0, 2, 4);//top
+  let corner1 = lookUpCorners(x, y, 1, 5, 3);//top right
+  let corner2 = lookUpCorners(x, y, 2, 4, 0);//bottom right
+  let corner3 = lookUpCorners(x, y, 3, 5, 1);//bottom
+  let corner4 = lookUpCorners(x, y, 4, 2, 0);//bottom left
+  let corner5 = lookUpCorners(x, y, 5, 1, 3);//top left
 
-  let topx = x;
-  let topy = borders(y - 1);
-  tile1 = grid[topy][topx];
-
-  topx = borders(x + 1);
-  topy = borders(y - 1);
-  tile2 = grid[topy][topx];
-
-  topx = borders(x + 1);
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner1 = findPointValue(tile1, 2);
-    temp1 = corner1;
-  }
-  if (tile2 != -1) {
-    corner1 = findPointValue(tile2, 4);
-    temp2 = corner1;
-  }
-  
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-
-  //top right
-  let corner2 = -1;
-
-  topx = borders(x + 1);
-  topy = y;
-  tile1 = grid[topy][topx];
-
-  topx = borders(x + 1);
-  topy = borders(y - 1);
-  tile2 = grid[topy][topx];
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner2 = findPointValue(tile1, 5);
-    temp1 = corner2;
-  }
-  if (tile2 != -1) {
-    corner2 = findPointValue(tile2, 3);
-    temp2 = corner2;
-  }
-
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-
-  //bottom right
-  let corner3 = -1;
-
-  topx = borders(x + 1);
-  topy = y;
-  tile1 = grid[topy][topx];
-
-  topx = x;
-  topy = borders(y + 1);
-  tile2 = grid[topy][topx];
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner3 = findPointValue(tile1, 4);
-    temp1 = corner3;
-  }
-  if (tile2 != -1) {
-    corner3 = findPointValue(tile2, 0);
-    temp2 = corner3;
-  }
-
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-
-  //bottom
-  let corner4 = -1;
-
-  topx = x
-  topy = borders(y + 1);
-  tile1 = grid[topy][topx];
-
-  topx = borders(x - 1);
-  topy = borders(y + 1);
-  tile2 = grid[topy][topx];
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner4 = findPointValue(tile1, 5);
-    temp1 = corner4;
-  }
-  if (tile2 != -1) {
-    corner4 = findPointValue(tile2, 1);
-
-  }
-
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-
-  //bottom left
-  let corner5 = -1;
-
-  topx = borders(x - 1);
-  topy = y
-  tile1 = grid[topy][topx];
-
-  topx = borders(x - 1);
-  topy = borders(y + 1);
-  tile2 = grid[topy][topx];
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner5 = findPointValue(tile1, 2);
-    temp1 = corner5;
-  }
-  if (tile2 != -1) {
-    corner5 = findPointValue(tile2, 0);
-    temp2 = corner5;
-  }
-
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-
-  //top left
-  let corner6 = -1;
-
-  topx = borders(x - 1);
-  topy = y
-  tile1 = grid[topy][topx];
-
-  topx = x
-  topy = borders(y - 1);
-  tile2 = grid[topy][topx];
-
-  temp1 = -1;
-  temp2 = -1;
-
-  if (tile1 != -1) {
-    corner6 = findPointValue(tile1, 1);
-    temp1 = corner6;
-  }
-  if (tile2 != -1) {
-    corner6 = findPointValue(tile2, 3);
-    temp2 = corner6;
-  }
-
-  if ((temp1 != -1)&&(temp2 != -1)) {
-    if (temp1 != temp2) {
-     console.log("ERROR: " + temp1 + " != " + temp2);
-    }
-  }
-  corners = [corner1, corner2, corner3, corner4, corner5, corner6];
+  corners = [corner0, corner1, corner2, corner3, corner4, corner5];
   solution = findTile(corners)
   return solution;
-
 }
 
-function borders(value) {
-  if (value < 0) {
-    value = grid.length - 1;
+function lookUpCorners(x, y, corner, corner1, corner2) {
+  let topx;
+  let topy;
+  let returncorner = -1;
+  if (corner == 0) {
+    topx = x;
+    topy = borders(y - 1, "h");
   }
-  if (value > grid.length - 1) {
-    value = 0;
+  if (corner == 1) {
+    topx = borders(x + 1, "w");
+    topy = y;
+  }
+  if (corner == 2) {
+    topx = borders(x + 1, "w");
+    topy = y;
+  }
+  if (corner == 3) {
+    topx = x
+    topy = borders(y + 1, "h");
+  }
+  if (corner == 4) {
+    topx = borders(x - 1, "w");
+    topy = y
+  }
+  if (corner == 5) {
+    topx = borders(x - 1, "w");
+    topy = y
+  }
+  tile1 = grid[topy][topx];
+
+  if (corner == 0) {
+    topx = borders(x + 1, "w");
+    topy = borders(y - 1, "h");
+  }
+  if (corner == 1) {
+    topx = borders(x + 1, "w");
+    topy = borders(y - 1, "h");
+  }
+  if (corner == 2) {
+    topx = x;
+    topy = borders(y + 1, "h");
+  }
+  if (corner == 3) {
+    topx = borders(x - 1, "w");
+    topy = borders(y + 1, "h");
+  }
+  if (corner == 4) {
+    topx = borders(x - 1, "w");
+    topy = borders(y + 1, "h");
+  }
+  if (corner == 5) {
+    topx = x;
+    topy = borders(y - 1, "h");
+  }
+  tile2 = grid[topy][topx];
+
+  let temp1 = -1;
+  let temp2 = -1;
+
+  if (tile1 != -1) {
+    returncorner = findPointValue(tile1, corner1);
+    temp1 = corner;
+  }
+  if (tile2 != -1) {
+    returncorner = findPointValue(tile2, corner2);
+    temp2 = corner;
+  }
+
+  if ((temp1 != -1) && (temp2 != -1)) {
+    if (temp1 != temp2) {
+      console.log("ERROR: " + temp1 + " != " + temp2);
+    }
+  }
+  return returncorner;
+}
+
+
+function borders(value, dimension) {
+  if (dimension == "w") {
+    if (value < 0) {
+      return gridTitlesWidth - 1;
+    }
+    if (value > gridTitlesWidth - 1) {
+      return 0;
+    }
+  }
+  if (dimension == "h") {
+    if (value < 0) {
+      return gridTitlesHeight - 1;
+    }
+    if (value > gridTitlesHeight - 1) {
+      return 0;
+    }
   }
   return value;
 }
@@ -380,22 +162,21 @@ function findTile(corners) {
   return random(solutions);
 }
 
-let scrollx=0;
-let scrolly=0;
+let scrollx = 0;
+let scrolly = 0;
 
 function draw() {
-  count = 0;
   background(100);
   stroke(0);
   strokeWeight(2);
   stroke(0);
   strokeWeight(2);
-  scrollx+=10;
-  scrolly+=10;
+  //scrollx += 0.5/sc;
+  //scrolly += 0.5/sc;
 
-  for (let a = 0; a < grid.length; a++) {
-    for (let b = 0; b < grid[a].length; b++) {
-      hexagon(3000 + (260 * b + 130 * a + scrollx)%4170, 800 + 225 * a , sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
+      hexagon(280/sc + (260 * b + 130 * a + scrollx) % (gridTitlesWidth*260), 40/sc + (225 * a + scrolly) % (gridTitlesHeight*225), sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
 
@@ -414,13 +195,9 @@ function draw() {
       else { add = 0 }
     }
   }
-
-
-  text(count, 750, 550, 100, 100);
 }
 
 function hexagon(transX, transY, s, r, i, variant) {
-  count++;
   stroke(100);
   strokeWeight(5);
   if (i) {
