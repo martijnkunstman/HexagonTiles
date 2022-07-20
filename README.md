@@ -13,9 +13,11 @@ TODO:
 - Prevent circle elements 
 - Use map for a game and check consistency of the pattern 
 - implement some kind of pathfinding mechanism  
+
+DONE:
+- Refactor code (corner lookup functions) 
 - scrollY fix 
 
 Live Demo: 
-- Refactor code (corner lookup functions) 
 
 https://martijnkunstman.github.io/HexagonTiles/

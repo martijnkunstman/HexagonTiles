@@ -5,7 +5,7 @@ let gridTitlesHeight = 22;
 let grid = [];
 
 function setup() {
-  //randomSeed(0);
+  randomSeed(0);
   if (gridTitlesHeight % 2 == 1) { gridTitlesHeight++; }
   createCanvas(800, 600);
   createGrid();
@@ -188,14 +188,18 @@ function draw() {
   strokeWeight(2);
   stroke(0);
   strokeWeight(2);
-  scrollx += 0.5/sc;
-  scrolly += 0.5/sc;
+  scrollx += 0.1/sc;
+  scrolly += 0.1 / sc;
 
   for (let a = 0; a < gridTitlesHeight; a++) {
     for (let b = 0; b < gridTitlesWidth; b++) {
-      //let extra = 260*gridTitlesHeight;
-      //let extra = 0;
-      hexagon(280 / sc + (260 * b + 130 * a + scrollx) % (gridTitlesWidth * 260), 40 / sc + (225 * a + scrolly) % (gridTitlesHeight * 225), sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      y = (225 * a + scrolly);
+      x = (260 * b + 130 * a + scrollx)+260*gridTitlesHeight;
+      if (y > gridTitlesHeight * 225) {
+        x = x - (gridTitlesHeight / 2 * 260);
+        y = y % (gridTitlesHeight * 225);
+      }
+       hexagon(280 / sc + x% (gridTitlesWidth * 260), 40 / sc + y, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
     }
   }
 
