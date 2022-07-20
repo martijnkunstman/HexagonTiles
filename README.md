@@ -17,4 +17,4 @@ TODO:
 
 Live Demo: 
 
-... 
+https://martijnkunstman.github.io/HexagonTiles/
