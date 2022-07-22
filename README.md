@@ -17,6 +17,7 @@ TODO:
 DONE:
 - Refactor code (corner lookup functions) 
 - ScrollY fix 
+- Find tiles that are least used option
 
 Live Demo: 
 

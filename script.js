@@ -1,6 +1,14 @@
 let sc = 0.1;
 let gridTitlesWidth = 18;
 let gridTitlesHeight = 20;
+let useCenterLines = false;
+//1. find last tile 
+//2. find first tile 
+//3. return no centerline solution 
+//4. return centerline solution 
+//5. return random element from solutions
+let returntype = 5;
+let findleastUsed = true;
 
 let grid = [];
 
@@ -10,7 +18,21 @@ function setup() {
   createCanvas(800, 600);
   createGrid();
   solveGrid();
+  //showUsed();
   //waveCollapse();
+}
+
+function showUsed() {
+  let used = [];
+  for (let a = 0; a < titles.length; a++) {
+    used.push(0);
+  }
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
+      used[grid[a][b]] = used[grid[a][b]] + 1;
+    }
+  }
+  console.log(used.join("-"));
 }
 
 function createGrid() {
@@ -23,7 +45,7 @@ function createGrid() {
 }
 
 function solveGrid() {
-  grid[0][0] = 0;
+  grid[0][0] = int(random(0,titles.length));
   for (let a = 0; a < gridTitlesHeight; a++) {
     for (let b = 0; b < gridTitlesWidth; b++) {
       if ((a != 0) || (b != 0)) {
@@ -32,6 +54,8 @@ function solveGrid() {
     }
   }
 }
+
+//---------------- work in progress - start ----------------
 
 // waveCollapse functions
 
@@ -43,7 +67,7 @@ function waveCollapse() {
 function findSolutions() {
   for (let a = 0; a < gridTitlesHeight; a++) {
     for (let b = 0; b < gridTitlesWidth; b++) {
-      console.log(a+"-"+b);
+      console.log(a + "-" + b);
       if ((grid[a][b] == -1) || (typeof grid[a][b] == "Array")) {
         grid[a][b] = findSolution(b, a);
       }
@@ -79,8 +103,7 @@ function checkForCollapse() {
   }
 }
 
-//----------------
-
+//---------------- work in progress - end ----------------
 
 
 function findSolution(x, y) {
@@ -208,8 +231,6 @@ function findTile(corners) {
     }
   }
 
-  let returntype = 5;
-
   //1. find last tile  
   if (returntype == 1) {
     solutions.sort((a, b) => a - b);
@@ -225,17 +246,29 @@ function findTile(corners) {
 
   //3. return no centerline solution
   if (returntype == 3) {
-    return filterCenterline(solutions, false);
+    solutions = filterCenterline(solutions, false);
+    if (findleastUsed) {
+      solutions = findLeastUsedTileFromSoulutions(solutions)
+    }
+    return random(solutions);
   }
 
   //4. return centerline solution
   if (returntype == 4) {
-    return filterCenterline(solutions, true);
+    solutions = filterCenterline(solutions, true);
+    if (findleastUsed) {
+      solutions = findLeastUsedTileFromSoulutions(solutions)
+    }
+    return random(solutions);
   }
 
   //5. return random element from solutions
   if (returntype == 5) {
+    if (findleastUsed) {
+      solutions = findLeastUsedTileFromSoulutions(solutions)
+    }
     return random(solutions);
+
   }
 
   //prevent circle solutions
@@ -243,7 +276,6 @@ function findTile(corners) {
 
   //6. return all solutions
   if (returntype == 6) {
-    console.log(solutions);
     return solutions;
   }
 
@@ -261,18 +293,46 @@ function filterCenterline(solutions, centerline) {
   }
   if (centerline) {
     if (centerlineSolutions.length > 0) {
-      return random(centerlineSolutions);
+      return centerlineSolutions;
     } else {
-      return random(noCenterlineSolutions);
+      return noCenterlineSolutions;
     }
   }
   else {
     if (noCenterlineSolutions.length > 0) {
-      return random(noCenterlineSolutions);
+      return noCenterlineSolutions;
     } else {
-      return random(centerlineSolutions);
+      return centerlineSolutions;
     }
   }
+}
+
+function findLeastUsedTileFromSoulutions(solutions) {
+  let used = [];
+  for (let a = 0; a < solutions.length; a++) {
+    used.push({ index: a, count: 0 })
+  }
+  for (let a = 0; a < gridTitlesHeight; a++) {
+    for (let b = 0; b < gridTitlesWidth; b++) {
+      if (grid[a][b] != -1) {
+        for (let c = 0; c < solutions.length; c++) {
+          if (grid[a][b] == solutions[c]) {
+            used[c].count++;
+          }
+        }
+      }
+    }
+  }
+  used.sort((a, b) => a.count - b.count);
+  let count = used[0].count;
+  let lessUsedSolutions = [];
+  for (let a = 0; a < used.length; a++) {
+    if (used[a].count == count) {
+      lessUsedSolutions.push(solutions[used[a].index]);
+    }
+  }
+  return lessUsedSolutions;
+
 }
 
 let once = true;
