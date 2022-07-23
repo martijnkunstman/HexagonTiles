@@ -47,7 +47,7 @@ function draw102Tiles() {
   teller2 = 1;
   add = 0;
   for (let a = 0; a < tiles.length; a++) {
-    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * tiles[a].rotation, tiles[a].invert, tiles[a].variant);
+    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * tiles[a].rotation, tiles[a].invert, tiles[a].variant, a);
     teller1++;
     if (teller1 > 6) {
       teller1 = 1;
@@ -435,8 +435,6 @@ function draw() {
   //background(100);
   stroke(0);
   strokeWeight(2);
-  stroke(0);
-  strokeWeight(2);
 
   if (scroll == "1") {
     scrolly += 1 / sc;
@@ -457,14 +455,127 @@ function draw() {
       x = (260 * b + 130 * a + scrollx);
       x = x - extra * (260 * gridTilesHeight / 2);
       x = x % (260 * gridTilesWidth);
-      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant);
+      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b]);
     }
   }
 
+  //connectCenters();
 
 }
 
-function hexagon(transX, transY, s, r, i, variant) {
+function connectCenters() {
+  let coordinates = [];
+  for (let a = 0; a < gridTilesHeight; a++) {
+    y = (225 * a + scrolly);
+    extra = Math.floor(y / (225 * gridTilesHeight));
+    y = y % (225 * gridTilesHeight);
+    coordinates.push([]);
+    for (let b = 0; b < gridTilesWidth; b++) {
+      x = (260 * b + 130 * a + scrollx);
+      x = x - extra * (260 * gridTilesHeight / 2);
+      x = x % (260 * gridTilesWidth);
+      coordinates[a][b] = { x: x, y: y };
+    }
+  }
+  stroke(255, 0, 0);
+
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
+
+      if (b > 0) {
+        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a][b - 1]].centerValue == 0)) {
+          x1 = coordinates[a][b].x;
+          y1 = coordinates[a][b].y;
+          x2 = coordinates[a][b - 1].x;
+          y2 = coordinates[a][b].y;
+          if ((Math.abs(x1 - x2) < 300) && (Math.abs(y1 - y2) < 300)) {
+            {
+              makeLine(x1, y1, x2, y2);
+            }
+          }
+        }
+      }
+
+
+      if (b < gridTilesWidth - 1) {
+        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a][b + 1]].centerValue == 0)) {
+          x1 = coordinates[a][b].x;
+          y1 = coordinates[a][b].y;
+          x2 = coordinates[a][b + 1].x;
+          y2 = coordinates[a][b].y;
+          if ((Math.abs(x1 - x2) < 300) && (Math.abs(y1 - y2) < 300)) {
+            {
+              makeLine(x1, y1, x2, y2);
+            }
+          }
+        }
+      }
+
+      if ((b > 0) && (a > 0)) {
+        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a - 1][b]].centerValue == 0)) {
+          x1 = coordinates[a][b].x;
+          y1 = coordinates[a][b].y;
+          x2 = coordinates[a - 1][b].x;
+          y2 = coordinates[a - 1][b].y;
+          if ((Math.abs(x1 - x2) < 400) && (Math.abs(y1 - y2) < 300)) {
+            {
+              makeLine(x1, y1, x2, y2);
+            }
+          }
+        }
+      }
+
+      if ((b < gridTilesWidth - 1) && (a > 0)) {
+        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a - 1][b + 1]].centerValue == 0)) {
+          x1 = coordinates[a][b].x;
+          y1 = coordinates[a][b].y;
+          x2 = coordinates[a - 1][b + 1].x;
+          y2 = coordinates[a - 1][b + 1].y;
+          if ((Math.abs(x1 - x2) < 500) && (Math.abs(y1 - y2) < 500)) {
+            {
+              makeLine(x1, y1, x2, y2);
+            }
+          }
+        }
+
+        if ((b > 0) && (a < gridTilesHeight - 1)) {
+          if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a + 1][b - 1]].centerValue == 0)) {
+            x1 = coordinates[a][b].x;
+            y1 = coordinates[a][b].y;
+            x2 = coordinates[a + 1][b - 1].x;
+            y2 = coordinates[a + 1][b - 1].y;
+            if ((Math.abs(x1 - x2) < 400) && (Math.abs(y1 - y2) < 300)) {
+              {
+                makeLine(x1, y1, x2, y2);
+              }
+            }
+          }
+        }
+        if ((b < gridTilesWidth - 1) && (a < gridTilesHeight - 1)) {
+          if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a + 1][b]].centerValue == 0)) {
+            x1 = coordinates[a][b].x;
+            y1 = coordinates[a][b].y;
+            x2 = coordinates[a + 1][b].x;
+            y2 = coordinates[a + 1][b].y;
+            if ((Math.abs(x1 - x2) < 500) && (Math.abs(y1 - y2) < 500)) {
+              {
+                makeLine(x1, y1, x2, y2);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+function makeLine(x1, y1, x2, y2) {
+  push();
+  scale(sc);
+  line(280 / sc + x1, y1 + 40 / sc, 280 / sc + x2, y2 + 40 / sc);
+  pop();
+}
+
+function hexagon(transX, transY, s, r, i, variant, id) {
   stroke(100);
   strokeWeight(5);
   if (i) {
@@ -590,5 +701,35 @@ function hexagon(transX, transY, s, r, i, variant) {
     }
     arc(130, -75, -150, -150, (TWO_PI / 12) * 3, (TWO_PI / 12) * 7);
   }
+  // draw from center to corner
+  rotate(-r);
+  stroke(255, 0, 0);
+  strokeWeight(20)
+  if (tiles[id].centerValue == 0) {
+    if ((tiles[id].center[0] == 1) && (tiles[id].points[0] == 0)) {
+      line(0, 0, 0, -150);	// top
+    }
+    if ((tiles[id].center[1] == 1) && (tiles[id].points[1] == 0)) {
+      line(0, 0, 130, -75);	// top right
+    }
+    if ((tiles[id].center[2] == 1) && (tiles[id].points[2] == 0)) {
+      line(0, 0, 130, 75);	// bottom right
+    }
+    if ((tiles[id].center[3] == 1) && (tiles[id].points[3] == 0)) {
+      line(0, 0, 0, 150);	// bottom
+    }
+    if ((tiles[id].center[4] == 1) && (tiles[id].points[4] == 0)) {
+      line(0, 0, -130, 75);	// bottom left
+    }
+    if ((tiles[id].center[5] == 1) && (tiles[id].points[5] == 0)) {
+      line(0, 0, -130, -75);	// top left
+    }
+
+
+
+  }
+
+
+
   pop();
 }
