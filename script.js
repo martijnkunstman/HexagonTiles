@@ -10,6 +10,7 @@ let useCenterLines = false;
 let returnType = 5;
 let findLeastUsed = true;
 let showUsed = false;
+let scroll = 3;
 
 let grid = [];
 let firstRun = true;
@@ -61,11 +62,11 @@ function draw102Tiles() {
 
 function options() {
   document.getElementById("options").innerHTML += `<select id='returnType' onchange='reset();'>
-  <option value='1'>1. find last tile</option>
-  <option value='2'>2. find first tile</option> 
-  <option value='3'>3. return no centerline solution</option> 
-  <option value='4'>4. return centerline solution</option> 
-  <option value='5' selected>5. return random element from solutions</option>
+  <option value='1'>last tile</option>
+  <option value='2'>first tile</option> 
+  <option value='3'>no centerline</option> 
+  <option value='4'>centerline</option> 
+  <option value='5' selected>random</option>
   </select>`;
   document.getElementById("options").innerHTML += `<select id='randomType' onchange='reset();'>
   <option value='0' selected>random</option>
@@ -75,20 +76,26 @@ function options() {
   <option value='4'>randomseed 4</option>
   </select>`;
   document.getElementById("options").innerHTML += `<select id='findLeastUsed' onchange='reset();'>
-  <option value='1' selected>findLeastUsed true</option>
-  <option value='0'>findLeastUsed false</option> 
+  <option value='1' selected>least used true</option>
+  <option value='0'>least used false</option> 
   </select>`;
   document.getElementById("options").innerHTML += `<select id='showUsed' onchange='reset();'>
   <option value='1'>showUsed true</option>
   <option value='0' selected>showUsed false</option> 
+  </select><br>`;
+  document.getElementById("options").innerHTML += `<select id='scroll' onchange='reset();'>
+  <option value='0'>none</option>
+  <option value='2'>x</option> 
+  <option value='3' selected>x y</option> 
   </select>`;
 
 }
 function reset() {
   returnType = document.getElementById("returnType").value;
   randomType = document.getElementById("randomType").value;
-  findLeastUsed =  (document.getElementById("findLeastUsed").value=="1");
-  showUsed = (document.getElementById("showUsed").value=="1");
+  findLeastUsed = (document.getElementById("findLeastUsed").value == "1");
+  showUsed = (document.getElementById("showUsed").value == "1");
+  scroll = document.getElementById("scroll").value;
   setup();
 }
 
@@ -109,7 +116,7 @@ function showUsedTiles() {
   fill(255);
   textSize(12);
   for (let a = 0; a < tiles.length; a++) {
-    text(used[a], (360 * teller1 + add)*sc, (325 * teller2)*sc);
+    text(used[a], (360 * teller1 + add) * sc, (325 * teller2) * sc);
     teller1++;
     if (teller1 > 6) {
       teller1 = 1;
@@ -430,8 +437,17 @@ function draw() {
   strokeWeight(2);
   stroke(0);
   strokeWeight(2);
-  scrollx += 1 / sc;
-  scrolly += 1 / sc;
+
+  if (scroll == "1") {
+    scrolly += 1 / sc;
+  }
+  if (scroll == "2") {
+    scrollx += 1 / sc;
+  }
+  if (scroll == "3") {
+    scrollx += 1 / sc;
+    scrolly += 1 / sc;
+  }
 
   for (let a = 0; a < gridTilesHeight; a++) {
     y = (225 * a + scrolly);
