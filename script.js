@@ -1,53 +1,141 @@
 let sc = 0.1;
-let gridTitlesWidth = 18;
-let gridTitlesHeight = 20;
+let gridTilesWidth = 18;
+let gridTilesHeight = 20;
 let useCenterLines = false;
 //1. find last tile 
 //2. find first tile 
 //3. return no centerline solution 
 //4. return centerline solution 
 //5. return random element from solutions
-let returntype = 5;
-let findleastUsed = true;
+let returnType = 5;
+let findLeastUsed = true;
+let showUsed = false;
 
 let grid = [];
+let firstRun = true;
+let randomType = 0;
+let scrollx = 0;
+let scrolly = 0;
 
 function setup() {
-  //randomSeed(1);
-  if (gridTitlesHeight % 2 == 1) { gridTitlesHeight++; }
+  scrollx = 0;
+  scrolly = 0;
+  if (randomType == 0) {
+  }
+  else {
+    randomSeed(randomType);
+  }
+  if (gridTilesHeight % 2 == 1) { gridTitesHeight++; }
   createCanvas(800, 600);
+  background(100);
   createGrid();
   solveGrid();
-  //showUsed();
+  if (firstRun) {
+    options();
+    firstRun = false;
+  }
+  draw102Tiles();
+  if (showUsed) {
+    showUsedTiles();
+  }
   //waveCollapse();
 }
 
-function showUsed() {
+function draw102Tiles() {
+  teller1 = 1;
+  teller2 = 1;
+  add = 0;
+  for (let a = 0; a < tiles.length; a++) {
+    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * tiles[a].rotation, tiles[a].invert, tiles[a].variant);
+    teller1++;
+    if (teller1 > 6) {
+      teller1 = 1;
+      teller2++;
+      if (add == 0) {
+        add = 130;
+      }
+      else { add = 0 }
+    }
+  }
+}
+
+function options() {
+  document.getElementById("options").innerHTML += `<select id='returnType' onchange='reset();'>
+  <option value='1'>1. find last tile</option>
+  <option value='2'>2. find first tile</option> 
+  <option value='3'>3. return no centerline solution</option> 
+  <option value='4'>4. return centerline solution</option> 
+  <option value='5' selected>5. return random element from solutions</option>
+  </select>`;
+  document.getElementById("options").innerHTML += `<select id='randomType' onchange='reset();'>
+  <option value='0' selected>random</option>
+  <option value='1'>randomseed 1</option> 
+  <option value='2'>randomseed 2</option> 
+  <option value='3'>randomseed 3</option> 
+  <option value='4'>randomseed 4</option>
+  </select>`;
+  document.getElementById("options").innerHTML += `<select id='findLeastUsed' onchange='reset();'>
+  <option value='1' selected>findLeastUsed true</option>
+  <option value='0'>findLeastUsed false</option> 
+  </select>`;
+  document.getElementById("options").innerHTML += `<select id='showUsed' onchange='reset();'>
+  <option value='1'>showUsed true</option>
+  <option value='0' selected>showUsed false</option> 
+  </select>`;
+
+}
+function reset() {
+  returnType = document.getElementById("returnType").value;
+  randomType = document.getElementById("randomType").value;
+  findLeastUsed =  (document.getElementById("findLeastUsed").value=="1");
+  showUsed = (document.getElementById("showUsed").value=="1");
+  setup();
+}
+
+
+function showUsedTiles() {
   let used = [];
-  for (let a = 0; a < titles.length; a++) {
+  for (let a = 0; a < tiles.length; a++) {
     used.push(0);
   }
-  for (let a = 0; a < gridTitlesHeight; a++) {
-    for (let b = 0; b < gridTitlesWidth; b++) {
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       used[grid[a][b]] = used[grid[a][b]] + 1;
     }
   }
-  console.log(used.join("-"));
+  teller1 = 1;
+  teller2 = 1;
+  add = 0;
+  fill(255);
+  textSize(12);
+  for (let a = 0; a < tiles.length; a++) {
+    text(used[a], (360 * teller1 + add)*sc, (325 * teller2)*sc);
+    teller1++;
+    if (teller1 > 6) {
+      teller1 = 1;
+      teller2++;
+      if (add == 0) {
+        add = 130;
+      }
+      else { add = 0 }
+    }
+  }
 }
 
 function createGrid() {
-  for (let a = 0; a < gridTitlesHeight; a++) {
+  grid = [];
+  for (let a = 0; a < gridTilesHeight; a++) {
     grid.push([])
-    for (let b = 0; b < gridTitlesWidth; b++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       grid[a].push(-1);
     }
   }
 }
 
 function solveGrid() {
-  grid[0][0] = int(random(0,titles.length));
-  for (let a = 0; a < gridTitlesHeight; a++) {
-    for (let b = 0; b < gridTitlesWidth; b++) {
+  grid[0][0] = int(random(0, tiles.length));
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       if ((a != 0) || (b != 0)) {
         grid[a][b] = findSolution(b, a);
       }
@@ -60,13 +148,13 @@ function solveGrid() {
 // waveCollapse functions
 
 function waveCollapse() {
-  grid[Math.round(gridTitlesHeight / 2)][Math.round(gridTitlesWidth / 2)] = 10;
+  grid[Math.round(gridTilesHeight / 2)][Math.round(gridTilesWidth / 2)] = 10;
   findSolutions();
 }
 
 function findSolutions() {
-  for (let a = 0; a < gridTitlesHeight; a++) {
-    for (let b = 0; b < gridTitlesWidth; b++) {
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       console.log(a + "-" + b);
       if ((grid[a][b] == -1) || (typeof grid[a][b] == "Array")) {
         grid[a][b] = findSolution(b, a);
@@ -79,8 +167,8 @@ function findSolutions() {
   //checkForCollapse();
 }
 function findLowestEntropy() {
-  for (let a = 0; a < gridTitlesHeight; a++) {
-    for (let b = 0; b < gridTitlesWidth; b++) {
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       if (grid[a][b] != -1) {
         grid[a][b] = findSolution(b, a);
       }
@@ -201,17 +289,17 @@ function lookUpCorners(x, y, corner, corner1, corner2) {
 function borders(value, dimension) {
   if (dimension == "w") {
     if (value < 0) {
-      return gridTitlesWidth - 1;
+      return gridTilesWidth - 1;
     }
-    if (value > gridTitlesWidth - 1) {
+    if (value > gridTilesWidth - 1) {
       return 0;
     }
   }
   if (dimension == "h") {
     if (value < 0) {
-      return gridTitlesHeight - 1;
+      return gridTilesHeight - 1;
     }
-    if (value > gridTitlesHeight - 1) {
+    if (value > gridTilesHeight - 1) {
       return 0;
     }
   }
@@ -219,52 +307,52 @@ function borders(value, dimension) {
 }
 
 function findPointValue(tile, point) {
-  return (titles[tile].points[point]);
+  return (tiles[tile].points[point]);
 }
 
 function findTile(corners) {
   solutions = [];
 
-  for (let a = 0; a < titles.length; a++) {
-    if ((titles[a].points[0] == corners[0] || corners[0] == -1) && (titles[a].points[1] == corners[1] || corners[1] == -1) && (titles[a].points[2] == corners[2] || corners[2] == -1) && (titles[a].points[3] == corners[3] || corners[3] == -1) && (titles[a].points[4] == corners[4] || corners[4] == -1) && (titles[a].points[5] == corners[5] || corners[5] == -1)) {
+  for (let a = 0; a < tiles.length; a++) {
+    if ((tiles[a].points[0] == corners[0] || corners[0] == -1) && (tiles[a].points[1] == corners[1] || corners[1] == -1) && (tiles[a].points[2] == corners[2] || corners[2] == -1) && (tiles[a].points[3] == corners[3] || corners[3] == -1) && (tiles[a].points[4] == corners[4] || corners[4] == -1) && (tiles[a].points[5] == corners[5] || corners[5] == -1)) {
       solutions.push(a);
     }
   }
 
   //1. find last tile  
-  if (returntype == 1) {
+  if (returnType == 1) {
     solutions.sort((a, b) => a - b);
     solutions.reverse();
     return solutions[0];
   }
 
   //2. find first tile  
-  if (returntype == 2) {
+  if (returnType == 2) {
     solutions.sort((a, b) => a - b);
     return solutions[0];
   }
 
   //3. return no centerline solution
-  if (returntype == 3) {
+  if (returnType == 3) {
     solutions = filterCenterline(solutions, false);
-    if (findleastUsed) {
+    if (findLeastUsed) {
       solutions = findLeastUsedTileFromSoulutions(solutions)
     }
     return random(solutions);
   }
 
   //4. return centerline solution
-  if (returntype == 4) {
+  if (returnType == 4) {
     solutions = filterCenterline(solutions, true);
-    if (findleastUsed) {
+    if (findLeastUsed) {
       solutions = findLeastUsedTileFromSoulutions(solutions)
     }
     return random(solutions);
   }
 
   //5. return random element from solutions
-  if (returntype == 5) {
-    if (findleastUsed) {
+  if (returnType == 5) {
+    if (findLeastUsed) {
       solutions = findLeastUsedTileFromSoulutions(solutions)
     }
     return random(solutions);
@@ -275,8 +363,9 @@ function findTile(corners) {
   //find one that is not used so much yet
 
   //6. return all solutions
-  if (returntype == 6) {
-    return solutions;
+  if (returnType == 6) {
+    return so
+    lutions;
   }
 
 }
@@ -285,7 +374,7 @@ function filterCenterline(solutions, centerline) {
   let noCenterlineSolutions = [];
   let centerlineSolutions = [];
   for (let a = 0; a < solutions.length; a++) {
-    if (titles[solutions[a]].centerline) {
+    if (tiles[solutions[a]].centerline) {
       centerlineSolutions.push(solutions[a]);
     } else {
       noCenterlineSolutions.push(solutions[a]);
@@ -312,8 +401,8 @@ function findLeastUsedTileFromSoulutions(solutions) {
   for (let a = 0; a < solutions.length; a++) {
     used.push({ index: a, count: 0 })
   }
-  for (let a = 0; a < gridTitlesHeight; a++) {
-    for (let b = 0; b < gridTitlesWidth; b++) {
+  for (let a = 0; a < gridTilesHeight; a++) {
+    for (let b = 0; b < gridTilesWidth; b++) {
       if (grid[a][b] != -1) {
         for (let c = 0; c < solutions.length; c++) {
           if (grid[a][b] == solutions[c]) {
@@ -335,12 +424,8 @@ function findLeastUsedTileFromSoulutions(solutions) {
 
 }
 
-let once = true;
-let scrollx = 0;
-let scrolly = 0;
-
 function draw() {
-  background(100);
+  //background(100);
   stroke(0);
   strokeWeight(2);
   stroke(0);
@@ -348,33 +433,19 @@ function draw() {
   scrollx += 1 / sc;
   scrolly += 1 / sc;
 
-  for (let a = 0; a < gridTitlesHeight; a++) {
+  for (let a = 0; a < gridTilesHeight; a++) {
     y = (225 * a + scrolly);
-    extra = Math.floor(y / (225 * gridTitlesHeight));
-    y = y % (225 * gridTitlesHeight);
-    for (let b = 0; b < gridTitlesWidth; b++) {
+    extra = Math.floor(y / (225 * gridTilesHeight));
+    y = y % (225 * gridTilesHeight);
+    for (let b = 0; b < gridTilesWidth; b++) {
       x = (260 * b + 130 * a + scrollx);
-      x = x - extra * (260 * gridTitlesHeight / 2);
-      x = x % (260 * gridTitlesWidth);
-      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * titles[grid[a][b]].rotation, titles[grid[a][b]].invert, titles[grid[a][b]].variant);
+      x = x - extra * (260 * gridTilesHeight / 2);
+      x = x % (260 * gridTilesWidth);
+      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant);
     }
   }
 
-  teller1 = 1;
-  teller2 = 1;
-  add = 0;
-  for (let a = 0; a < titles.length; a++) {
-    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * titles[a].rotation, titles[a].invert, titles[a].variant);
-    teller1++;
-    if (teller1 > 6) {
-      teller1 = 1;
-      teller2++;
-      if (add == 0) {
-        add = 130;
-      }
-      else { add = 0 }
-    }
-  }
+
 }
 
 function hexagon(transX, transY, s, r, i, variant) {

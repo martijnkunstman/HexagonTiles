@@ -1,4 +1,4 @@
-let titles =
+let tiles =
     [
         { "rotation": 0, "invert": false, "variant": 1, "points": [1, 0, 0, 0, 0, 0], "dot": [1, 0, 0, 0, 0, 0], "center": [0, 1, 1, 1, 1, 1], "centerline": false },
         { "rotation": 1, "invert": false, "variant": 1, "points": [0, 1, 0, 0, 0, 0], "dot": [0, 1, 0, 0, 0, 0], "center": [1, 0, 1, 1, 1, 1], "centerline": false },
