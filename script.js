@@ -10,11 +10,12 @@ let useCenterLines = false;
 let returnType = 5;
 let findLeastUsed = true;
 let showUsed = false;
-let scroll = 3;
+let scroll = 0;
+let showPath = 1;
 
 let grid = [];
 let firstRun = true;
-let randomType = 0;
+let randomType = 2;
 let scrollx = 0;
 let scrolly = 0;
 
@@ -41,6 +42,8 @@ function setup() {
   }
   //waveCollapse();
 }
+
+
 
 function draw102Tiles() {
   teller1 = 1;
@@ -69,9 +72,9 @@ function options() {
   <option value='5' selected>random</option>
   </select>`;
   document.getElementById("options").innerHTML += `<select id='randomType' onchange='reset();'>
-  <option value='0' selected>random</option>
+  <option value='0'>random</option>
   <option value='1'>randomseed 1</option> 
-  <option value='2'>randomseed 2</option> 
+  <option value='2' selected>randomseed 2</option> 
   <option value='3'>randomseed 3</option> 
   <option value='4'>randomseed 4</option>
   </select>`;
@@ -84,9 +87,15 @@ function options() {
   <option value='0' selected>showUsed false</option> 
   </select><br>`;
   document.getElementById("options").innerHTML += `<select id='scroll' onchange='reset();'>
-  <option value='0'>none</option>
+  <option value='0' selected>none</option>
   <option value='2'>x</option> 
-  <option value='3' selected>x y</option> 
+  <option value='3'>x y</option> 
+  </select><br>`;
+  document.getElementById("options").innerHTML += `<select id='showpath' onchange='reset();'>
+  <option value='0'>none</option>
+  <option value='1' selected>center</option> 
+  <option value='2'>sides</option> 
+  <option value='3'>center and sides</option> 
   </select>`;
 
 }
@@ -96,6 +105,7 @@ function reset() {
   findLeastUsed = (document.getElementById("findLeastUsed").value == "1");
   showUsed = (document.getElementById("showUsed").value == "1");
   scroll = document.getElementById("scroll").value;
+  showPath = document.getElementById("showpath").value;
   setup();
 }
 
@@ -371,8 +381,7 @@ function findTile(corners) {
 
   //6. return all solutions
   if (returnType == 6) {
-    return so
-    lutions;
+    return solutions;
   }
 
 }
@@ -458,116 +467,8 @@ function draw() {
       hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b]);
     }
   }
-
-  //connectCenters();
-
 }
 
-function connectCenters() {
-  let coordinates = [];
-  for (let a = 0; a < gridTilesHeight; a++) {
-    y = (225 * a + scrolly);
-    extra = Math.floor(y / (225 * gridTilesHeight));
-    y = y % (225 * gridTilesHeight);
-    coordinates.push([]);
-    for (let b = 0; b < gridTilesWidth; b++) {
-      x = (260 * b + 130 * a + scrollx);
-      x = x - extra * (260 * gridTilesHeight / 2);
-      x = x % (260 * gridTilesWidth);
-      coordinates[a][b] = { x: x, y: y };
-    }
-  }
-  stroke(255, 0, 0);
-
-  for (let a = 0; a < gridTilesHeight; a++) {
-    for (let b = 0; b < gridTilesWidth; b++) {
-
-      if (b > 0) {
-        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a][b - 1]].centerValue == 0)) {
-          x1 = coordinates[a][b].x;
-          y1 = coordinates[a][b].y;
-          x2 = coordinates[a][b - 1].x;
-          y2 = coordinates[a][b].y;
-          if ((Math.abs(x1 - x2) < 300) && (Math.abs(y1 - y2) < 300)) {
-            {
-              makeLine(x1, y1, x2, y2);
-            }
-          }
-        }
-      }
-
-
-      if (b < gridTilesWidth - 1) {
-        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a][b + 1]].centerValue == 0)) {
-          x1 = coordinates[a][b].x;
-          y1 = coordinates[a][b].y;
-          x2 = coordinates[a][b + 1].x;
-          y2 = coordinates[a][b].y;
-          if ((Math.abs(x1 - x2) < 300) && (Math.abs(y1 - y2) < 300)) {
-            {
-              makeLine(x1, y1, x2, y2);
-            }
-          }
-        }
-      }
-
-      if ((b > 0) && (a > 0)) {
-        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a - 1][b]].centerValue == 0)) {
-          x1 = coordinates[a][b].x;
-          y1 = coordinates[a][b].y;
-          x2 = coordinates[a - 1][b].x;
-          y2 = coordinates[a - 1][b].y;
-          if ((Math.abs(x1 - x2) < 400) && (Math.abs(y1 - y2) < 300)) {
-            {
-              makeLine(x1, y1, x2, y2);
-            }
-          }
-        }
-      }
-
-      if ((b < gridTilesWidth - 1) && (a > 0)) {
-        if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a - 1][b + 1]].centerValue == 0)) {
-          x1 = coordinates[a][b].x;
-          y1 = coordinates[a][b].y;
-          x2 = coordinates[a - 1][b + 1].x;
-          y2 = coordinates[a - 1][b + 1].y;
-          if ((Math.abs(x1 - x2) < 500) && (Math.abs(y1 - y2) < 500)) {
-            {
-              makeLine(x1, y1, x2, y2);
-            }
-          }
-        }
-
-        if ((b > 0) && (a < gridTilesHeight - 1)) {
-          if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a + 1][b - 1]].centerValue == 0)) {
-            x1 = coordinates[a][b].x;
-            y1 = coordinates[a][b].y;
-            x2 = coordinates[a + 1][b - 1].x;
-            y2 = coordinates[a + 1][b - 1].y;
-            if ((Math.abs(x1 - x2) < 400) && (Math.abs(y1 - y2) < 300)) {
-              {
-                makeLine(x1, y1, x2, y2);
-              }
-            }
-          }
-        }
-        if ((b < gridTilesWidth - 1) && (a < gridTilesHeight - 1)) {
-          if ((tiles[grid[a][b]].centerValue == 0) && (tiles[grid[a + 1][b]].centerValue == 0)) {
-            x1 = coordinates[a][b].x;
-            y1 = coordinates[a][b].y;
-            x2 = coordinates[a + 1][b].x;
-            y2 = coordinates[a + 1][b].y;
-            if ((Math.abs(x1 - x2) < 500) && (Math.abs(y1 - y2) < 500)) {
-              {
-                makeLine(x1, y1, x2, y2);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
 function makeLine(x1, y1, x2, y2) {
   push();
   scale(sc);
@@ -701,35 +602,159 @@ function hexagon(transX, transY, s, r, i, variant, id) {
     }
     arc(130, -75, -150, -150, (TWO_PI / 12) * 3, (TWO_PI / 12) * 7);
   }
-  // draw from center to corner
-  rotate(-r);
-  stroke(255, 0, 0);
-  strokeWeight(20)
-  if (tiles[id].centerValue == 0) {
-    if ((tiles[id].center[0] == 1) && (tiles[id].points[0] == 0)) {
-      line(0, 0, 0, -150);	// top
-    }
-    if ((tiles[id].center[1] == 1) && (tiles[id].points[1] == 0)) {
-      line(0, 0, 130, -75);	// top right
-    }
-    if ((tiles[id].center[2] == 1) && (tiles[id].points[2] == 0)) {
-      line(0, 0, 130, 75);	// bottom right
-    }
-    if ((tiles[id].center[3] == 1) && (tiles[id].points[3] == 0)) {
-      line(0, 0, 0, 150);	// bottom
-    }
-    if ((tiles[id].center[4] == 1) && (tiles[id].points[4] == 0)) {
-      line(0, 0, -130, 75);	// bottom left
-    }
-    if ((tiles[id].center[5] == 1) && (tiles[id].points[5] == 0)) {
-      line(0, 0, -130, -75);	// top left
-    }
+  // draw connected sides
 
-
-
+  if ((showPath == 2) || (showPath == 3)) {
+    rotate(-r);
+    stroke(255, 0, 0);
+    strokeWeight(20);
+    if ((tiles[id].points[0] == 0) && (tiles[id].points[1] == 0)) {
+      line(0, -150, 130, -75);
+    }
+    if ((tiles[id].points[1] == 0) && (tiles[id].points[2] == 0)) {
+      line(130, -75, 130, 75);
+    }
+    if ((tiles[id].points[2] == 0) && (tiles[id].points[3] == 0)) {
+      line(130, 75, 0, 150);
+    }
+    if ((tiles[id].points[3] == 0) && (tiles[id].points[4] == 0)) {
+      line(0, 150, -130, 75);
+    }
+    if ((tiles[id].points[4] == 0) && (tiles[id].points[5] == 0)) {
+      line(-130, 75, -130, -75);
+    }
+    if ((tiles[id].points[5] == 0) && (tiles[id].points[0] == 0)) {
+      line(-130, -75, 0, -150);
+    }
+    rotate(r)
   }
 
 
+  // draw from center to corner
+
+  if ((showPath == 1) || (showPath == 3)) {
+    rotate(-r);
+    stroke(255, 0, 0);
+    strokeWeight(20)
+    if (tiles[id].centerValue == 0) {
+      if ((tiles[id].center[0] == 1) && (tiles[id].points[0] == 0)) {
+        line(0, 0, 0, -150);	// top
+      }
+      if ((tiles[id].center[1] == 1) && (tiles[id].points[1] == 0)) {
+        line(0, 0, 130, -75);	// top right
+      }
+      if ((tiles[id].center[2] == 1) && (tiles[id].points[2] == 0)) {
+        line(0, 0, 130, 75);	// bottom right
+      }
+      if ((tiles[id].center[3] == 1) && (tiles[id].points[3] == 0)) {
+        line(0, 0, 0, 150);	// bottom
+      }
+      if ((tiles[id].center[4] == 1) && (tiles[id].points[4] == 0)) {
+        line(0, 0, -130, 75);	// bottom left
+      }
+      if ((tiles[id].center[5] == 1) && (tiles[id].points[5] == 0)) {
+        line(0, 0, -130, -75);	// top left
+      }
+
+    }
+    rotate(r)
+
+  }
+  let makeBlocks = true;
+  if (makeBlocks) {
+    colorBlocked = 'rgba(255,0,0,0.5)';
+    colorNotBlocked = 'rgba(255,255,255,0)';
+    rotate(-r);
+    strokeWeight(5);
+    stroke(0, 0, 255);
+    hhh = 75
+    if (tiles[id].centerValue == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-65, -hhh / 2, 130, hhh);
+    if (tiles[id].points[0] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-65, -hhh / 2 - hhh, 130, hhh);
+    if (tiles[id].points[3] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-65, -hhh / 2 + hhh, 130, hhh);
+    if ((tiles[id].points[4] == 0) && (tiles[id].points[5] == 0)) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-195, -hhh / 2, 130, hhh);
+    if ((tiles[id].points[1] == 0) && (tiles[id].points[2] == 0)) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(65, -hhh / 2, 130, hhh);
+    if (tiles[id].points[5] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-195, -hhh / 2 - hhh, 130, hhh);
+    if (tiles[id].points[1] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(65, -hhh / 2 - hhh, 130, hhh);
+    if (tiles[id].points[4] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-195, -hhh / 2 + hhh, 130, hhh);
+    if (tiles[id].points[2] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(65, -hhh / 2 + hhh, 130, hhh);
+    if (tiles[id].points[0] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-65, -hhh / 2 - hhh * 2, 130, hhh);
+    if (tiles[id].points[3] == 0) {
+      fill(colorNotBlocked);
+    }
+    else {
+      fill(colorBlocked);
+    }
+    rect(-65, -hhh / 2 + hhh * 2, 130, hhh);
+    rotate(r)
+  }
+
 
   pop();
+}
+
+let pathFindMatrix = [];
+
+function createPathFindMatrix() {
+  
+
 }
