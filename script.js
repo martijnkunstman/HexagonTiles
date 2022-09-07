@@ -693,7 +693,7 @@ function makePathBlock() {
 */
 
 function makeBlocksF(r, id) {
-  colorBlocked = 'rgba(0,255,0,1)';
+  colorBlocked = 'rgba(0,255,0,0.5)';
   colorNotBlocked = 'rgba(255,255,255,0)';
   rotate(-r);
   strokeWeight(5);

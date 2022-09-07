@@ -112,31 +112,33 @@ let tiles =
         { "rotation": 0, "invert": true, "variant": 10, "points": [0, 0, 0, 1, 1, 1], "dot": [0, 0, 0, 0, 0, 0], "center": [1, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1] },
         { "rotation": 1, "invert": true, "variant": 10, "points": [1, 0, 0, 0, 1, 1], "dot": [0, 0, 0, 0, 0, 0], "center": [1, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0] },
         { "rotation": 2, "invert": true, "variant": 10, "points": [1, 1, 0, 0, 0, 1], "dot": [0, 0, 0, 0, 0, 0], "center": [1, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0] },
+
     ]
     /*
 
-        { "rotation": 0, "invert": false, "variant": 11, "points": [1, 1, 1, 0, 1, 0], "dot": [0, 0, 0, 0, 1, 0], "center": [1, 1, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 1, "invert": false, "variant": 11, "points": [0, 1, 1, 1, 0, 1], "dot": [0, 0, 0, 0, 0, 1], "center": [1, 1, 1, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 2, "invert": false, "variant": 11, "points": [1, 0, 1, 1, 1, 0], "dot": [1, 0, 0, 0, 0, 0], "center": [0, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 3, "invert": false, "variant": 11, "points": [0, 1, 0, 1, 1, 1], "dot": [0, 1, 0, 0, 0, 0], "center": [1, 0, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 4, "invert": false, "variant": 11, "points": [1, 0, 1, 0, 1, 1], "dot": [0, 0, 1, 0, 0, 0], "center": [1, 1, 0, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 5, "invert": false, "variant": 11, "points": [1, 1, 0, 1, 0, 1], "dot": [0, 0, 0, 1, 0, 0], "center": [1, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { "rotation": 0, "invert": false, "variant": 11, "points": [1, 1, 1, 0, 1, 0], "dot": [0, 0, 0, 0, 1, 0], "center": [1, 1, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0] },
+        { "rotation": 1, "invert": false, "variant": 11, "points": [0, 1, 1, 1, 0, 1], "dot": [0, 0, 0, 0, 0, 1], "center": [1, 1, 1, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1] },
+        { "rotation": 2, "invert": false, "variant": 11, "points": [1, 0, 1, 1, 1, 0], "dot": [1, 0, 0, 0, 0, 0], "center": [0, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1] },
+        { "rotation": 3, "invert": false, "variant": 11, "points": [0, 1, 0, 1, 1, 1], "dot": [0, 1, 0, 0, 0, 0], "center": [1, 0, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1] },
+        { "rotation": 4, "invert": false, "variant": 11, "points": [1, 0, 1, 0, 1, 1], "dot": [0, 0, 1, 0, 0, 0], "center": [1, 1, 0, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0] },
+        { "rotation": 5, "invert": false, "variant": 11, "points": [1, 1, 0, 1, 0, 1], "dot": [0, 0, 0, 1, 0, 0], "center": [1, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1] },
 
-        { "rotation": 0, "invert": true, "variant": 11, "points": [0, 0, 0, 1, 0, 1], "dot": [0, 0, 0, 0, 1, 0], "center": [1, 1, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 1, "invert": true, "variant": 11, "points": [1, 0, 0, 0, 1, 0], "dot": [0, 0, 0, 0, 0, 1], "center": [1, 1, 1, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 2, "invert": true, "variant": 11, "points": [0, 1, 0, 0, 0, 1], "dot": [1, 0, 0, 0, 0, 0], "center": [0, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 3, "invert": true, "variant": 11, "points": [1, 0, 1, 0, 0, 0], "dot": [0, 1, 0, 0, 0, 0], "center": [1, 0, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 4, "invert": true, "variant": 11, "points": [0, 1, 0, 1, 0, 0], "dot": [0, 0, 1, 0, 0, 0], "center": [1, 1, 0, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 5, "invert": true, "variant": 11, "points": [0, 0, 1, 0, 1, 0], "dot": [0, 0, 0, 1, 0, 0], "center": [1, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        { "rotation": 0, "invert": true, "variant": 11, "points": [0, 0, 0, 1, 0, 1], "dot": [0, 0, 0, 0, 1, 0], "center": [1, 1, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 01] },
+        { "rotation": 1, "invert": true, "variant": 11, "points": [1, 0, 0, 0, 1, 0], "dot": [0, 0, 0, 0, 0, 1], "center": [1, 1, 1, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0] },
+        { "rotation": 2, "invert": true, "variant": 11, "points": [0, 1, 0, 0, 0, 1], "dot": [1, 0, 0, 0, 0, 0], "center": [0, 1, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0] },
+        { "rotation": 3, "invert": true, "variant": 11, "points": [1, 0, 1, 0, 0, 0], "dot": [0, 1, 0, 0, 0, 0], "center": [1, 0, 1, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0] },
+        { "rotation": 4, "invert": true, "variant": 11, "points": [0, 1, 0, 1, 0, 0], "dot": [0, 0, 1, 0, 0, 0], "center": [1, 1, 0, 1, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1] },
+        { "rotation": 5, "invert": true, "variant": 11, "points": [0, 0, 1, 0, 1, 0], "dot": [0, 0, 0, 1, 0, 0], "center": [1, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1] },
 
 
-        { "rotation": 0, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [0, 1, 0, 0, 1, 0], "center": [1, 0, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0] },
-        { "rotation": 1, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [0, 0, 1, 0, 0, 1], "center": [1, 1, 0, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 2, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [1, 0, 0, 1, 0, 0], "center": [0, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 3, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [0, 1, 0, 0, 1, 0], "center": [1, 0, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 4, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [0, 0, 1, 0, 0, 1], "center": [1, 1, 0, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-        { "rotation": 5, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [1, 0, 0, 1, 0, 0], "center": [0, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
+        { "rotation": 0, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [0, 1, 0, 0, 1, 0], "center": [1, 0, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0] },
+        { "rotation": 1, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [0, 0, 1, 0, 0, 1], "center": [1, 1, 0, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1] },
+        { "rotation": 2, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [1, 0, 0, 1, 0, 0], "center": [0, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0] },
+        { "rotation": 3, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [0, 1, 0, 0, 1, 0], "center": [1, 0, 1, 1, 0, 1], "centerline": true, "centerValue": 0, "path": [0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1] },
+        { "rotation": 4, "invert": false, "variant": 12, "points": [1, 0, 1, 0, 1, 0], "dot": [0, 0, 1, 0, 0, 1], "center": [1, 1, 0, 1, 1, 0], "centerline": true, "centerValue": 0, "path": [1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0] },
+        { "rotation": 5, "invert": false, "variant": 12, "points": [0, 1, 0, 1, 0, 1], "dot": [1, 0, 0, 1, 0, 0], "center": [0, 1, 1, 0, 1, 1], "centerline": true, "centerValue": 0, "path": [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1] }
 
 
     ]
     */
+    
