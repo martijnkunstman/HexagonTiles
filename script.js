@@ -11,7 +11,7 @@ let returnType = 5;
 let findLeastUsed = true;
 let showUsed = false;
 let scroll = 0;
-let showPath = 1;
+let showPath = 3;
 
 let grid = [];
 let firstRun = true;
@@ -40,7 +40,7 @@ function setup() {
   if (showUsed) {
     showUsedTiles();
   }
-  createPathFindMatrix();
+  //createPathFindMatrix();
   //waveCollapse();
 }
 
@@ -469,7 +469,7 @@ function draw() {
     }
   }
 
-  makePathBlock();
+  //makePathBlock();
   noLoop();
 }
 
@@ -664,7 +664,7 @@ function hexagon(transX, transY, s, r, i, variant, id) {
     rotate(r)
 
   }
-  let makeBlocks = false;
+  let makeBlocks = true;
 
   if (makeBlocks) {
     makeBlocksF(r, id);
@@ -673,7 +673,7 @@ function hexagon(transX, transY, s, r, i, variant, id) {
   pop();
 
 }
-
+/*
 function makePathBlock() {
   for (let a = 0; a < pathFindMatrix.length; a++) {
     for (let b = 0; b < pathFindMatrix[a].length; b++) {
@@ -690,94 +690,107 @@ function makePathBlock() {
     }
   }
 }
+*/
 
 function makeBlocksF(r, id) {
-  colorBlocked = 'rgba(255,0,0,0.5)';
+  colorBlocked = 'rgba(0,255,0,1)';
   colorNotBlocked = 'rgba(255,255,255,0)';
   rotate(-r);
   strokeWeight(5);
   stroke(0, 0, 255);
   hhh = 75
-  if (tiles[id].centerValue == 0) {
+  //
+  if (tiles[id].path[5] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-65, -hhh / 2, 130, hhh);
-  if (tiles[id].points[0] == 0) {
+  //
+  if (tiles[id].path[2] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-65, -hhh / 2 - hhh, 130, hhh);
-  if (tiles[id].points[3] == 0) {
+  //
+  if (tiles[id].path[8] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-65, -hhh / 2 + hhh, 130, hhh);
-  if ((tiles[id].points[4] == 0) && (tiles[id].points[5] == 0)) {
+  //  
+  if (tiles[id].path[4] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-195, -hhh / 2, 130, hhh);
-  if ((tiles[id].points[1] == 0) && (tiles[id].points[2] == 0)) {
+  //
+  if (tiles[id].path[6] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(65, -hhh / 2, 130, hhh);
-  if (tiles[id].points[5] == 0) {
+  //
+  if (tiles[id].path[1] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-195, -hhh / 2 - hhh, 130, hhh);
-  if (tiles[id].points[1] == 0) {
+  //
+  if (tiles[id].path[3] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(65, -hhh / 2 - hhh, 130, hhh);
-  if (tiles[id].points[4] == 0) {
+  //  
+  if (tiles[id].path[7] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-195, -hhh / 2 + hhh, 130, hhh);
-  if (tiles[id].points[2] == 0) {
+  //
+  if (tiles[id].path[9] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(65, -hhh / 2 + hhh, 130, hhh);
-  if (tiles[id].points[0] == 0) {
+  //
+  if (tiles[id].path[0] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-65, -hhh / 2 - hhh * 2, 130, hhh);
-  if (tiles[id].points[3] == 0) {
+  //
+  if (tiles[id].path[10] == 0) {
     fill(colorNotBlocked);
   }
   else {
     fill(colorBlocked);
   }
   rect(-65, -hhh / 2 + hhh * 2, 130, hhh);
+  //
   rotate(r)
 }
-
+/*
 let pathFindMatrix = [];
 
 function createPathFindMatrix() {
@@ -795,7 +808,9 @@ function createPathFindMatrix() {
   }
 
 }
+*/
 
+/*
 function findPathFindBlock(a, b, id) {
   console.log(id);
   if (tiles[id].centerValue == 0) {
@@ -865,3 +880,4 @@ function findPathFindBlock(a, b, id) {
     pathFindMatrix[a][b] = 1;
   }
 }
+*/

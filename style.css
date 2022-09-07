@@ -5,7 +5,7 @@ html,body{
 #options{
     position:absolute;
     bottom:0;
-    left:0;
+    right:0;
     width:200px;
     height:200px;
     margin:10px;
