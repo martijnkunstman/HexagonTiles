@@ -470,7 +470,7 @@ function draw() {
   }
 
   //makePathBlock();
-  noLoop();
+  //noLoop();
 }
 
 function makeLine(x1, y1, x2, y2) {
