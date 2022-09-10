@@ -1,8 +1,8 @@
 let sc = 0.1;
-let gridTilesWidth = 18;
-let gridTilesHeight = 24;
+let gridTilesWidth = 22;
+let gridTilesHeight = 30;
 let useCenterLines = false;
-let randomseedExtra = 16;
+let randomseedExtra = 51;
 
 let pathFindMatrix = [];
 
@@ -39,9 +39,9 @@ function setup() {
   else {
     randomSeed(randomType + randomseedExtra);
   }
-  console.log("seed:"+(randomType + randomseedExtra));
+  console.log("seed:" + (randomType + randomseedExtra));
   if (gridTilesHeight % 2 == 1) { gridTitesHeight++; }
-  createCanvas(900, 600);
+  createCanvas(900, 900);
   background(100);
   createGrid();
   solveGrid();
@@ -115,7 +115,7 @@ function options() {
 function reset() {
   returnType = document.getElementById("returnType").value;
   randomType = parseInt(document.getElementById("randomType").value);
-  console.log("randomType"+randomType);
+  console.log("randomType" + randomType);
   findLeastUsed = (document.getElementById("findLeastUsed").value == "1");
   showUsed = (document.getElementById("showUsed").value == "1");
   scroll = document.getElementById("scroll").value;
@@ -489,14 +489,41 @@ function draw() {
 
   if (firstTime) {
     cleanUpMatrix();
-    var graph = new Graph(pathFindMatrix, { diagonal: true });
-    var start = graph.grid[0][5];
-    var end = graph.grid[gridTilesHeight*3][8];
-    result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+    graph = new Graph(pathFindMatrix, { diagonal: true });
+    //var end = graph.grid[gridTilesHeight * 3][8];
+    //result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+    result = findResults();
+    if (result.lenght<1)
+    {
+      console.log("no path found");
+    }
   }
   showResult(result);
   firstTime = false;
 }
+
+var graph;
+
+function findResults() {
+  for (a = 0; a < gridTilesWidth * 2; a++) {
+    for (b = gridTilesWidth * 2-1; b > -1; b--) {
+      let tempresult = findResult(a, b);
+      if (tempresult.length>0)
+      {
+        return tempresult;
+      }
+    }
+  }
+  return [];
+}
+function findResult(start, end) {
+  var start = graph.grid[0][start];
+  var end = graph.grid[gridTilesHeight * 3][end];
+  return result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+
+}
+
+
 var result;
 function cleanUpMatrix() {
   let temp = [];
@@ -540,15 +567,13 @@ function showResult(result) {
   for (a = 0; a < result.length; a++) {
     x = result[a].y * 13 + scrollx / 10;
     y = result[a].x * 7.5 + scrolly / 10;
-    if (showPoint==a)
-    { 
-    point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight* 22.5) + 25);
+    if (showPoint == a) {
+      point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
     }
   }
   showPoint++;
-  if(showPoint>result.length-1)
-  {
-    showPoint=0;
+  if (showPoint > result.length - 1) {
+    showPoint = 0;
   }
 }
 
