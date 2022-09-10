@@ -456,46 +456,45 @@ function findLeastUsedTileFromSoulutions(solutions) {
 let firstTime = true;
 function draw() {
   if (firstTime) {
-  //background(100);
-  stroke(0);
-  strokeWeight(2);
+    //background(100);
+    stroke(0);
+    strokeWeight(2);
 
-  if (scroll == "1") {
-    scrolly += 1 / sc;
-  }
-  if (scroll == "2") {
-    scrollx += 1 / sc;
-  }
-  if (scroll == "3") {
-    scrollx += 1 / sc;
-    scrolly += 1 / sc;
-  }
-
-  for (let a = 0; a < gridTilesHeight; a++) {
-    y = (225 * a + scrolly);
-    extra = Math.floor(y / (225 * gridTilesHeight));
-    y = y % (225 * gridTilesHeight);
-    for (let b = 0; b < gridTilesWidth; b++) {
-      x = (260 * b + 130 * a + scrollx);
-      x = x - extra * (260 * gridTilesHeight / 2);
-      x = x % (260 * gridTilesWidth);
-      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b], b, a, 1);
+    if (scroll == "1") {
+      scrolly += 1 / sc;
     }
-  }
+    if (scroll == "2") {
+      scrollx += 1 / sc;
+    }
+    if (scroll == "3") {
+      scrollx += 1 / sc;
+      scrolly += 1 / sc;
+    }
 
-  //noLoop();
+    for (let a = 0; a < gridTilesHeight; a++) {
+      y = (225 * a + scrolly);
+      extra = Math.floor(y / (225 * gridTilesHeight));
+      y = y % (225 * gridTilesHeight);
+      for (let b = 0; b < gridTilesWidth; b++) {
+        x = (260 * b + 130 * a + scrollx);
+        x = x - extra * (260 * gridTilesHeight / 2);
+        x = x % (260 * gridTilesWidth);
+        hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b], b, a, 1);
+      }
+    }
 
-  //console.log(pathFindMatrix);
-  //showPoints();
+    //noLoop();
 
-  
+    //console.log(pathFindMatrix);
+    //showPoints();
+
+
     cleanUpMatrix();
     graph = new Graph(pathFindMatrix, { diagonal: true });
     //var end = graph.grid[gridTilesHeight * 3][8];
     //result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
     result = findResults();
-    if (result.lenght<1)
-    {
+    if (result.lenght < 1) {
       console.log("no path found");
     }
   }
@@ -507,10 +506,9 @@ var graph;
 
 function findResults() {
   for (a = 0; a < gridTilesWidth * 2; a++) {
-    for (b = gridTilesWidth * 2-1; b > -1; b--) {
+    for (b = gridTilesWidth * 2 - 1; b > -1; b--) {
       let tempresult = findResult(a, b);
-      if (tempresult.length>0)
-      {
+      if (tempresult.length > 0) {
         return tempresult;
       }
     }
@@ -521,7 +519,6 @@ function findResult(start, end) {
   var start = graph.grid[0][start];
   var end = graph.grid[gridTilesHeight * 3][end];
   return result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
-
 }
 
 
@@ -563,14 +560,19 @@ function showPoints() {
 }
 let showPoint = 0;
 function showResult(result) {
-  stroke('red'); // Change the color
+  stroke('green'); // Change the color
   strokeWeight(10);
   for (a = 0; a < result.length; a++) {
     x = result[a].y * 13 + scrollx / 10;
     y = result[a].x * 7.5 + scrolly / 10;
     if (showPoint == a) {
-      point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
+      stroke('green');
     }
+    else {
+      stroke('white');
+    }
+    point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
+
   }
   showPoint++;
   if (showPoint > result.length - 1) {
