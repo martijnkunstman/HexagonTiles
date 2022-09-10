@@ -455,6 +455,7 @@ function findLeastUsedTileFromSoulutions(solutions) {
 }
 let firstTime = true;
 function draw() {
+  if (firstTime) {
   //background(100);
   stroke(0);
   strokeWeight(2);
@@ -487,7 +488,7 @@ function draw() {
   //console.log(pathFindMatrix);
   //showPoints();
 
-  if (firstTime) {
+  
     cleanUpMatrix();
     graph = new Graph(pathFindMatrix, { diagonal: true });
     //var end = graph.grid[gridTilesHeight * 3][8];
