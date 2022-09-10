@@ -1,7 +1,8 @@
 let sc = 0.1;
-let gridTilesWidth = 6;
-let gridTilesHeight = 12;
+let gridTilesWidth = 18;
+let gridTilesHeight = 24;
 let useCenterLines = false;
+let randomseedExtra = 16;
 
 let pathFindMatrix = [];
 
@@ -21,7 +22,7 @@ let returnType = 5;
 let findLeastUsed = true;
 let showUsed = false;
 let scroll = 0;
-let showPath = 3;
+let showPath = 0;
 
 let grid = [];
 let firstRun = true;
@@ -30,13 +31,15 @@ let scrollx = 0;
 let scrolly = 0;
 
 function setup() {
+  //firstTime = true;
   scrollx = 0;
   scrolly = 0;
   if (randomType == 0) {
   }
   else {
-    randomSeed(randomType + 11);
+    randomSeed(randomType + randomseedExtra);
   }
+  console.log("seed:"+(randomType + randomseedExtra));
   if (gridTilesHeight % 2 == 1) { gridTitesHeight++; }
   createCanvas(900, 600);
   background(100);
@@ -102,8 +105,8 @@ function options() {
   <option value='3'>x y</option> 
   </select><br>`;
   document.getElementById("options").innerHTML += `<select id='showpath' onchange='reset();'>
-  <option value='0'>none</option>
-  <option value='1' selected>center</option> 
+  <option value='0' selected>none</option>
+  <option value='1'>center</option> 
   <option value='2'>sides</option> 
   <option value='3'>center and sides</option> 
   </select>`;
@@ -111,7 +114,8 @@ function options() {
 }
 function reset() {
   returnType = document.getElementById("returnType").value;
-  randomType = document.getElementById("randomType").value;
+  randomType = parseInt(document.getElementById("randomType").value);
+  console.log("randomType"+randomType);
   findLeastUsed = (document.getElementById("findLeastUsed").value == "1");
   showUsed = (document.getElementById("showUsed").value == "1");
   scroll = document.getElementById("scroll").value;
@@ -449,7 +453,7 @@ function findLeastUsedTileFromSoulutions(solutions) {
   return lessUsedSolutions;
 
 }
-
+let firstTime = true;
 function draw() {
   //background(100);
   stroke(0);
@@ -478,16 +482,22 @@ function draw() {
     }
   }
 
-  noLoop();
-  cleanUpMatrix();
+  //noLoop();
+
   //console.log(pathFindMatrix);
-  showPoints();
-  var graph = new Graph(pathFindMatrix, { diagonal: true });
-  var start = graph.grid[0][5];
-  var end = graph.grid[36][7];
-  var result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+  //showPoints();
+
+  if (firstTime) {
+    cleanUpMatrix();
+    var graph = new Graph(pathFindMatrix, { diagonal: true });
+    var start = graph.grid[0][5];
+    var end = graph.grid[gridTilesHeight*3][8];
+    result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+  }
   showResult(result);
+  firstTime = false;
 }
+var result;
 function cleanUpMatrix() {
   let temp = [];
   for (a = 0; a < pathFindMatrix.length; a++) {
@@ -523,13 +533,22 @@ function showPoints() {
     }
   }
 }
-
+let showPoint = 0;
 function showResult(result) {
-  console.log(result);
-  stroke('green'); // Change the color
-  strokeWeight(5);
+  stroke('red'); // Change the color
+  strokeWeight(10);
   for (a = 0; a < result.length; a++) {
-    point(result[a].y * 13 + 266, result[a].x * 7.5 + 25);
+    x = result[a].y * 13 + scrollx / 10;
+    y = result[a].x * 7.5 + scrolly / 10;
+    if (showPoint==a)
+    { 
+    point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight* 22.5) + 25);
+    }
+  }
+  showPoint++;
+  if(showPoint>result.length-1)
+  {
+    showPoint=0;
   }
 }
 
@@ -735,8 +754,14 @@ function hexagon(transX, transY, s, r, i, variant, id, x, y, add) {
 
 }
 function makeBlocksF(r, id, x, y) {
+  drawRect = false;
+
   colorBlocked = 'rgba(0,255,0,0.5)';
   colorNotBlocked = 'rgba(255,255,255,0)';
+
+  //colorBlocked = 'rgba(255,255,255,0)';
+  //colorNotBlocked = 'rgba(255,255,255,0)';
+
   rotate(-r);
   strokeWeight(5);
   stroke(0, 0, 255);
@@ -755,7 +780,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 2][x * 2 + 1 + z] = 1;
   }
-  rect(-65, -hhh / 2, 130, hhh);
+  if (drawRect) rect(-65, -hhh / 2, 130, hhh);
   //2
   if (tiles[id].path[2] == 0) {
     fill(colorNotBlocked);
@@ -765,7 +790,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 1][x * 2 + 1 + z] = 1;
   }
-  rect(-65, -hhh / 2 - hhh, 130, hhh);
+  if (drawRect) rect(-65, -hhh / 2 - hhh, 130, hhh);
   //8
   if (tiles[id].path[8] == 0) {
     fill(colorNotBlocked);
@@ -775,7 +800,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 3][x * 2 + 1 + z] = 1;
   }
-  rect(-65, -hhh / 2 + hhh, 130, hhh);
+  if (drawRect) rect(-65, -hhh / 2 + hhh, 130, hhh);
   //4  
   if (tiles[id].path[4] == 0) {
     fill(colorNotBlocked);
@@ -785,7 +810,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 2][x * 2 + z] = 1;
   }
-  rect(-195, -hhh / 2, 130, hhh);
+  if (drawRect) rect(-195, -hhh / 2, 130, hhh);
   //6
   if (tiles[id].path[6] == 0) {
     fill(colorNotBlocked);
@@ -795,7 +820,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 2][x * 2 + 2 + z] = 1;
   }
-  rect(65, -hhh / 2, 130, hhh);
+  if (drawRect) rect(65, -hhh / 2, 130, hhh);
   //1
   if (tiles[id].path[1] == 0) {
     fill(colorNotBlocked);
@@ -805,7 +830,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 1][x * 2 + z] = 1;
   }
-  rect(-195, -hhh / 2 - hhh, 130, hhh);
+  if (drawRect) rect(-195, -hhh / 2 - hhh, 130, hhh);
   //3
   if (tiles[id].path[3] == 0) {
     fill(colorNotBlocked);
@@ -815,7 +840,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 1][x * 2 + 2 + z] = 1;
   }
-  rect(65, -hhh / 2 - hhh, 130, hhh);
+  if (drawRect) rect(65, -hhh / 2 - hhh, 130, hhh);
   //7
   if (tiles[id].path[7] == 0) {
     fill(colorNotBlocked);
@@ -825,7 +850,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 3][x * 2 + z] = 1;
   }
-  rect(-195, -hhh / 2 + hhh, 130, hhh);
+  if (drawRect) rect(-195, -hhh / 2 + hhh, 130, hhh);
   //9
   if (tiles[id].path[9] == 0) {
     fill(colorNotBlocked);
@@ -835,7 +860,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 3][x * 2 + 2 + z] = 1;
   }
-  rect(65, -hhh / 2 + hhh, 130, hhh);
+  if (drawRect) rect(65, -hhh / 2 + hhh, 130, hhh);
   //0
   if (tiles[id].path[0] == 0) {
     fill(colorNotBlocked);
@@ -845,7 +870,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3][x * 2 + 1 + z] = 1;
   }
-  rect(-65, -hhh / 2 - hhh * 2, 130, hhh);
+  if (drawRect) rect(-65, -hhh / 2 - hhh * 2, 130, hhh);
   //10
   if (tiles[id].path[10] == 0) {
     fill(colorNotBlocked);
@@ -855,7 +880,7 @@ function makeBlocksF(r, id, x, y) {
     fill(colorBlocked);
     pathFindMatrix[y * 3 + 4][x * 2 + 1 + z] = 1;
   }
-  rect(-65, -hhh / 2 + hhh * 2, 130, hhh);
+  if (drawRect) rect(-65, -hhh / 2 + hhh * 2, 130, hhh);
   //
   rotate(r)
 }
