@@ -615,7 +615,7 @@ function showResult(result) {
       stroke('red');
     }
     else {
-      stroke("rgba(255,255,255,0.05)");
+      stroke("rgba(255,255,255,0.04)");
     }
     point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
 
