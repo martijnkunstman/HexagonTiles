@@ -2,19 +2,26 @@ let sc = 0.1;
 let gridTilesWidth = 22;
 let gridTilesHeight = 32;
 let useCenterLines = false;
-
-const params = new Proxy(new URLSearchParams(window.location.search), {
-  get: (searchParams, prop) => searchParams.get(prop),
-});
-// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-let value = params.seed; // "some_value"
-console.log("value"+value);
-let randomseedExtra = 0;
-if (value!=null)
-{
-  randomseedExtra = value;
+let randomseedExtra = 367;
+/*
+var client = new XMLHttpRequest();
+client.open('GET', './data.txt');
+client.onreadystatechange = function() {
+  console.log(client.responseText);
+  temp=client.responseText.split("-");
+  temp=temp[temp.length-1];
+  console.log(temp);
+  if (temp=="")
+  {
+    randomseedExtra=0;
+  }
+  else
+  {
+  randomseedExtra=parseInt(temp)+1;
+  }
 }
-
+client.send();
+*/
 let pathFindMatrix = [];
 
 for (a = 0; a < (gridTilesHeight * 3 + 2); a++) {
@@ -511,7 +518,7 @@ function draw() {
     }
   }
   showResult(result);
-  
+
   firstTime = false;
 }
 
@@ -523,23 +530,38 @@ function findResults() {
   for (a = 0; a < gridTilesWidth * 2; a++) {
     for (b = gridTilesWidth * 2 - 1; b > -1; b--) {
       let tempresult = findResult(a, b);
-      if(tempresult.length>0)
-      {
+      if (tempresult.length > 0) {
         //return tempresult;
       }
-      if (tempresult.length>tempLength)
-      {
+      if (tempresult.length > tempLength) {
         resultReturn = tempresult
         tempLength = resultReturn.length;
       }
     }
   }
-  console.log("seed="+tempLength+"-"+randomseedExtra);
-  //alert(tempLength)
-  //setTimeout(function(){window.open("http://127.0.0.1:5500/index.html?seed="+(parseInt(randomseedExtra)+1))},2000)
-  randomseedExtra++;
+  // console.log("seed=" + tempLength + "-" + randomseedExtra);
+  // //alert(tempLength)
+  // //setTimeout(function(){window.open("http://127.0.0.1:5500/index.html?seed="+(parseInt(randomseedExtra)+1))},2000)
+  
+  // let data = "seed=" + tempLength + "-" + randomseedExtra;
+
+  // fetch("/postdata", {
+  //   method: "post",
+  //   headers: {
+  //     'Accept': 'application/json, text/plain, */*',
+  //     'Content-Type': 'application/json'
+  // },
+  //   body: JSON.stringify({postData: data})
+  // }).then(res => {
+  //   //location.reload();
+  //   console.log("Request complete! response:", res);
+  // });
+
+  // randomseedExtra++;
   return resultReturn;
 }
+randomseedExtra = 367
+
 function findResult(start, end) {
   var start = graph.grid[0][start];
   var end = graph.grid[gridTilesHeight * 3][end];
