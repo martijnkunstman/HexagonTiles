@@ -1,7 +1,17 @@
 let sc = 0.1;
-let gridTilesWidth = 16;
-let gridTilesHeight = 22;
+let gridTilesWidth = 6;
+let gridTilesHeight = 12;
 let useCenterLines = false;
+
+let pathFindMatrix = [];
+
+for (a = 0; a < (gridTilesHeight * 3 + 2); a++) {
+  pathFindMatrix.push([])
+  for (b = 0; b < (gridTilesWidth * 2 + 1); b++) {
+    pathFindMatrix[a].push(3);
+  }
+}
+
 //1. find last tile 
 //2. find first tile 
 //3. return no centerline solution 
@@ -25,7 +35,7 @@ function setup() {
   if (randomType == 0) {
   }
   else {
-    randomSeed(randomType);
+    randomSeed(randomType + 11);
   }
   if (gridTilesHeight % 2 == 1) { gridTitesHeight++; }
   createCanvas(900, 600);
@@ -40,7 +50,6 @@ function setup() {
   if (showUsed) {
     showUsedTiles();
   }
-  //createPathFindMatrix();
   //waveCollapse();
 }
 
@@ -51,7 +60,7 @@ function draw102Tiles() {
   teller2 = 1;
   add = 0;
   for (let a = 0; a < tiles.length; a++) {
-    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * tiles[a].rotation, tiles[a].invert, tiles[a].variant, a);
+    hexagon(360 * teller1 + add, 325 * teller2, sc, (TWO_PI / 6) * tiles[a].rotation, tiles[a].invert, tiles[a].variant, a, 0, 0, 0);
     teller1++;
     if (teller1 > 6) {
       teller1 = 1;
@@ -173,14 +182,14 @@ function waveCollapse() {
 function findSolutions() {
   for (let a = 0; a < gridTilesHeight; a++) {
     for (let b = 0; b < gridTilesWidth; b++) {
-      console.log(a + "-" + b);
+      //console.log(a + "-" + b);
       if ((grid[a][b] == -1) || (typeof grid[a][b] == "Array")) {
         grid[a][b] = findSolution(b, a);
       }
-      console.log(grid);
+      //console.log(grid);
     }
   }
-  console.log(grid);
+  //console.log(grid);
   //findLowestEntropy();
   //checkForCollapse();
 }
@@ -205,7 +214,7 @@ function checkForCollapse() {
   if (!collapse) {
     findSolutions()
   } else {
-    console.log(grid);
+    //console.log(grid);
   }
 }
 
@@ -465,12 +474,63 @@ function draw() {
       x = (260 * b + 130 * a + scrollx);
       x = x - extra * (260 * gridTilesHeight / 2);
       x = x % (260 * gridTilesWidth);
-      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b]);
+      hexagon(280 / sc + x, 40 / sc + y, sc, (TWO_PI / 6) * tiles[grid[a][b]].rotation, tiles[grid[a][b]].invert, tiles[grid[a][b]].variant, grid[a][b], b, a, 1);
     }
   }
 
-  //makePathBlock();
-  //noLoop();
+  noLoop();
+  cleanUpMatrix();
+  //console.log(pathFindMatrix);
+  showPoints();
+  var graph = new Graph(pathFindMatrix, { diagonal: true });
+  var start = graph.grid[0][5];
+  var end = graph.grid[36][7];
+  var result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
+  showResult(result);
+}
+function cleanUpMatrix() {
+  let temp = [];
+  for (a = 0; a < pathFindMatrix.length; a++) {
+    temp[a] = [];
+    for (b = 0; b < gridTilesWidth * 2; b++) {
+      temp[a].push("3");
+    }
+  }
+  for (a = 0; a < pathFindMatrix.length; a++) {
+    for (b = 0; b < pathFindMatrix[a].length; b++) {
+      at = a;
+      bt = b % (gridTilesWidth * 2);
+      if (pathFindMatrix[a][b] == 0) {
+        temp[at][bt] = 1;
+      }
+      else {
+        temp[at][bt] = 0;
+      }
+    }
+  }
+  pathFindMatrix = temp;
+}
+
+function showPoints() {
+  stroke('purple'); // Change the color
+  strokeWeight(5);
+  for (a = 0; a < pathFindMatrix.length; a++) {
+    for (b = 0; b < pathFindMatrix[a].length; b++) {
+      if (pathFindMatrix[a][b] == 1) {
+        point(b * 13 + 266, a * 7.5 + 25);
+        //console.log(a + "-" + b)
+      }
+    }
+  }
+}
+
+function showResult(result) {
+  console.log(result);
+  stroke('green'); // Change the color
+  strokeWeight(5);
+  for (a = 0; a < result.length; a++) {
+    point(result[a].y * 13 + 266, result[a].x * 7.5 + 25);
+  }
 }
 
 function makeLine(x1, y1, x2, y2) {
@@ -480,7 +540,7 @@ function makeLine(x1, y1, x2, y2) {
   pop();
 }
 
-function hexagon(transX, transY, s, r, i, variant, id) {
+function hexagon(transX, transY, s, r, i, variant, id, x, y, add) {
   stroke(100);
   strokeWeight(5);
   if (i) {
@@ -667,217 +727,136 @@ function hexagon(transX, transY, s, r, i, variant, id) {
   let makeBlocks = true;
 
   if (makeBlocks) {
-    makeBlocksF(r, id);
-
+    if (add) {
+      makeBlocksF(r, id, x, y);
+    }
   }
   pop();
 
 }
-/*
-function makePathBlock() {
-  for (let a = 0; a < pathFindMatrix.length; a++) {
-    for (let b = 0; b < pathFindMatrix[a].length; b++) {
-      if (pathFindMatrix[a][b] == 1) {
-        fill('rgba(0,0,255,0.5)');
-      }
-      else {
-        fill('rgba(255,255,255,0.5)');
-      }
-      push();
-      scale(sc);
-      rect(a * 130 + 2800 - 65, b * 75 - 75/2 + 400, 130, 75);
-      pop();
-    }
-  }
-}
-*/
-
-function makeBlocksF(r, id) {
+function makeBlocksF(r, id, x, y) {
   colorBlocked = 'rgba(0,255,0,0.5)';
   colorNotBlocked = 'rgba(255,255,255,0)';
   rotate(-r);
   strokeWeight(5);
   stroke(0, 0, 255);
   hhh = 75
+  //5 2 8 4 6 1 3 7 9 0 10
   //
+  // 5=2,1  2=1,1  8=3,1  4=2,0  6=2,2  1=1,0  3=1,2  7=3,0  9=3,2  0=0,1  10=4,1 
+  //
+  //5
+  let z = y;
   if (tiles[id].path[5] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + 1 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + 1 + z] = 1;
   }
   rect(-65, -hhh / 2, 130, hhh);
-  //
+  //2
   if (tiles[id].path[2] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + 1 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + 1 + z] = 1;
   }
   rect(-65, -hhh / 2 - hhh, 130, hhh);
-  //
+  //8
   if (tiles[id].path[8] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + 1 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + 1 + z] = 1;
   }
   rect(-65, -hhh / 2 + hhh, 130, hhh);
-  //  
+  //4  
   if (tiles[id].path[4] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + z] = 1;
   }
   rect(-195, -hhh / 2, 130, hhh);
-  //
+  //6
   if (tiles[id].path[6] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 2][x * 2 + 2 + z] = 1;
   }
   rect(65, -hhh / 2, 130, hhh);
-  //
+  //1
   if (tiles[id].path[1] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + z] = 1;
   }
   rect(-195, -hhh / 2 - hhh, 130, hhh);
-  //
+  //3
   if (tiles[id].path[3] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 1][x * 2 + 2 + z] = 1;
   }
   rect(65, -hhh / 2 - hhh, 130, hhh);
-  //  
+  //7
   if (tiles[id].path[7] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + z] = 1;
   }
   rect(-195, -hhh / 2 + hhh, 130, hhh);
-  //
+  //9
   if (tiles[id].path[9] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + 2 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 3][x * 2 + 2 + z] = 1;
   }
   rect(65, -hhh / 2 + hhh, 130, hhh);
-  //
+  //0
   if (tiles[id].path[0] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3][x * 2 + 1 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3][x * 2 + 1 + z] = 1;
   }
   rect(-65, -hhh / 2 - hhh * 2, 130, hhh);
-  //
+  //10
   if (tiles[id].path[10] == 0) {
     fill(colorNotBlocked);
+    pathFindMatrix[y * 3 + 4][x * 2 + 1 + z] = 0;
   }
   else {
     fill(colorBlocked);
+    pathFindMatrix[y * 3 + 4][x * 2 + 1 + z] = 1;
   }
   rect(-65, -hhh / 2 + hhh * 2, 130, hhh);
   //
   rotate(r)
 }
-/*
-let pathFindMatrix = [];
 
-function createPathFindMatrix() {
-  pathFindMatrix = [];
-  for (let a = 0; a < gridTilesWidth* 2 -1; a++) {
-    pathFindMatrix[a] = [];
-    for (let b = 0; b < gridTilesHeight * 2 -1; b++) {
-      pathFindMatrix[a][b] = 0;
-    }
-  }
-  for (let a = 0; a < pathFindMatrix.length; a++) {
-    for (let b = 0; b < pathFindMatrix[a].length; b++) {
-      console.log(a+"-"+b);
-    }
-  }
-
-}
-*/
-
-/*
-function findPathFindBlock(a, b, id) {
-  console.log(id);
-  if (tiles[id].centerValue == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[0] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[3] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if ((tiles[id].points[4] == 0) && (tiles[id].points[5] == 0)) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if ((tiles[id].points[1] == 0) && (tiles[id].points[2] == 0)) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[5] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[1] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[4] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[2] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[0] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-  if (tiles[id].points[3] == 0) {
-    pathFindMatrix[a][b] = 0;
-  }
-  else {
-    pathFindMatrix[a][b] = 1;
-  }
-}
-*/
