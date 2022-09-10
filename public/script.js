@@ -1,8 +1,19 @@
 let sc = 0.1;
 let gridTilesWidth = 22;
-let gridTilesHeight = 30;
+let gridTilesHeight = 32;
 let useCenterLines = false;
-let randomseedExtra = 51;
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+// Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+let value = params.seed; // "some_value"
+console.log("value"+value);
+let randomseedExtra = 0;
+if (value!=null)
+{
+  randomseedExtra = value;
+}
 
 let pathFindMatrix = [];
 
@@ -494,26 +505,40 @@ function draw() {
     //var end = graph.grid[gridTilesHeight * 3][8];
     //result = astar.search(graph, start, end, { heuristic: astar.heuristics.diagonal });
     result = findResults();
+
     if (result.lenght < 1) {
       console.log("no path found");
     }
   }
   showResult(result);
+  
   firstTime = false;
 }
 
 var graph;
 
 function findResults() {
+  resultReturn = [];
+  let tempLength = 0;
   for (a = 0; a < gridTilesWidth * 2; a++) {
     for (b = gridTilesWidth * 2 - 1; b > -1; b--) {
       let tempresult = findResult(a, b);
-      if (tempresult.length > 0) {
-        return tempresult;
+      if(tempresult.length>0)
+      {
+        //return tempresult;
+      }
+      if (tempresult.length>tempLength)
+      {
+        resultReturn = tempresult
+        tempLength = resultReturn.length;
       }
     }
   }
-  return [];
+  console.log("seed="+tempLength+"-"+randomseedExtra);
+  //alert(tempLength)
+  //setTimeout(function(){window.open("http://127.0.0.1:5500/index.html?seed="+(parseInt(randomseedExtra)+1))},2000)
+  randomseedExtra++;
+  return resultReturn;
 }
 function findResult(start, end) {
   var start = graph.grid[0][start];
@@ -560,16 +585,15 @@ function showPoints() {
 }
 let showPoint = 0;
 function showResult(result) {
-  stroke('green'); // Change the color
-  strokeWeight(10);
+  strokeWeight(6);
   for (a = 0; a < result.length; a++) {
     x = result[a].y * 13 + scrollx / 10;
     y = result[a].x * 7.5 + scrolly / 10;
     if (showPoint == a) {
-      stroke('green');
+      stroke('red');
     }
     else {
-      stroke('white');
+      stroke("rgba(255,255,255,0.05)");
     }
     point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
 

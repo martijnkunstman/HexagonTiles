@@ -1,0 +1,22 @@
+{
+  "name": "hexagontiles",
+  "version": "1.0.0",
+  "description": "Procedural continuous map generation by matching hexagon tiles with a pattern. \r There are 102 different types of hexagonal tiles with a unique pattern. \r Tiles are matched based on their corner colours.  \r Every corner of a hexagonal tile got two neighbour corners of hexagon tiles.\r Every hexagon tile got 6 neighbour hexagon tiles.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martijnkunstman/HexagonTiles.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martijnkunstman/HexagonTiles/issues"
+  },
+  "homepage": "https://github.com/martijnkunstman/HexagonTiles#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
