@@ -21,4 +21,4 @@ DONE:
 
 Live Demo: 
 
-https://martijnkunstman.github.io/HexagonTiles/
+https://martijnkunstman.github.io/HexagonTiles/public
