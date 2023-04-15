@@ -22,6 +22,9 @@ client.onreadystatechange = function() {
 }
 client.send();
 */
+
+
+
 let pathFindMatrix = [];
 
 for (a = 0; a < (gridTilesHeight * 3 + 2); a++) {
@@ -31,6 +34,7 @@ for (a = 0; a < (gridTilesHeight * 3 + 2); a++) {
   }
 }
 
+
 //1. find last tile 
 //2. find first tile 
 //3. return no centerline solution 
@@ -38,13 +42,13 @@ for (a = 0; a < (gridTilesHeight * 3 + 2); a++) {
 //5. return random element from solutions
 let returnType = 5;
 let findLeastUsed = true;
-let showUsed = false;
-let scroll = 0;
-let showPath = 0;
+let showUsed = true;
+let scroll = 3;
+let showPath = 3;
 
 let grid = [];
 let firstRun = true;
-let randomType = 2;
+let randomType = 0;
 let scrollx = 0;
 let scrolly = 0;
 
@@ -103,9 +107,9 @@ function options() {
   <option value='5' selected>random</option>
   </select>`;
   document.getElementById("options").innerHTML += `<select id='randomType' onchange='reset();'>
-  <option value='0'>random</option>
+  <option value='0' selected>random</option>
   <option value='1'>randomseed 1</option> 
-  <option value='2' selected>randomseed 2</option> 
+  <option value='2'>randomseed 2</option> 
   <option value='3'>randomseed 3</option> 
   <option value='4'>randomseed 4</option>
   </select>`;
@@ -114,19 +118,19 @@ function options() {
   <option value='0'>least used false</option> 
   </select>`;
   document.getElementById("options").innerHTML += `<select id='showUsed' onchange='reset();'>
-  <option value='1'>showUsed true</option>
-  <option value='0' selected>showUsed false</option> 
+  <option value='1' selected>showUsed true</option>
+  <option value='0'>showUsed false</option> 
   </select><br>`;
   document.getElementById("options").innerHTML += `<select id='scroll' onchange='reset();'>
-  <option value='0' selected>none</option>
+  <option value='0'>none</option>
   <option value='2'>x</option> 
-  <option value='3'>x y</option> 
+  <option value='3' selected>x y</option> 
   </select><br>`;
   document.getElementById("options").innerHTML += `<select id='showpath' onchange='reset();'>
-  <option value='0' selected>none</option>
+  <option value='0'>none</option>
   <option value='1'>center</option> 
   <option value='2'>sides</option> 
-  <option value='3'>center and sides</option> 
+  <option value='3' selected>center and sides</option> 
   </select>`;
 
 }
@@ -473,7 +477,7 @@ function findLeastUsedTileFromSoulutions(solutions) {
 }
 let firstTime = true;
 function draw() {
-  if (firstTime) {
+
     //background(100);
     stroke(0);
     strokeWeight(2);
@@ -488,6 +492,11 @@ function draw() {
       scrollx += 1 / sc;
       scrolly += 1 / sc;
     }
+
+    fill(100);
+    stroke(100);
+
+    rect(250, 0, 260 * gridTilesWidth, 225 * gridTilesHeight);
 
     for (let a = 0; a < gridTilesHeight; a++) {
       y = (225 * a + scrolly);
@@ -505,8 +514,8 @@ function draw() {
 
     //console.log(pathFindMatrix);
     //showPoints();
-
-
+    if (firstTime) {
+    
     cleanUpMatrix();
     graph = new Graph(pathFindMatrix, { diagonal: true });
     //var end = graph.grid[gridTilesHeight * 3][8];
@@ -516,10 +525,16 @@ function draw() {
     if (result.lenght < 1) {
       console.log("no path found");
     }
+    else{
+      console.log("path found");
+    }
+    firstTime = false
+
   }
+  
   showResult(result);
 
-  firstTime = false;
+  
 }
 
 var graph;
@@ -593,6 +608,7 @@ function cleanUpMatrix() {
   pathFindMatrix = temp;
 }
 
+
 function showPoints() {
   stroke('purple'); // Change the color
   strokeWeight(5);
@@ -605,6 +621,7 @@ function showPoints() {
     }
   }
 }
+
 let showPoint = 0;
 function showResult(result) {
   strokeWeight(6);
@@ -612,10 +629,11 @@ function showResult(result) {
     x = result[a].y * 13 + scrollx / 10;
     y = result[a].x * 7.5 + scrolly / 10;
     if (showPoint == a) {
-      stroke('red');
+      stroke('blue');
     }
     else {
-      stroke("rgba(255,255,255,0.04)");
+      stroke('blue');
+      //stroke("rgba(255,255,255,0.04)");
     }
     point((x % (gridTilesWidth * 26)) + 266, y % (gridTilesHeight * 22.5) + 25);
 
